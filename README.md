@@ -10,17 +10,17 @@ If you wanna features like `Notification`, `Role base` system & etc. clone the r
 Table of contents:
 </h2>
 
-<a href="##features">Features</a>  
+<a href="#features">Features</a>  
 
-<a href="##technology stacks">Technology Stack</a>  
+<a href="#technology stacks">Technology Stack</a>  
 
-<a href="##setup">Setup</a>  
+<a href="#setup">Setup</a>  
 
-<a href="##backend">Backend Documentation</a>  
+<a href="#backend">Backend Documentation</a>  
 
-<a href="##frontend">Frontend Documentation</a>  
+<a href="#frontend">Frontend Documentation</a>  
 
-<a href="##contributing">Contributing</a>  
+<a href="#contributing">Contributing</a>  
 
 ## Features
 
