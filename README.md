@@ -41,26 +41,24 @@ We will use these technologies to manage our application:
 
 - **Frontend**: React  <br>
 
-<br>
-<br />
+\
 
 - **DevOps**: Docker  <br>
 
-- 
+\
 
 - **Database**:PostgreSQL  <br>
 
-- 
+\
 
 - **Authentication**: OTP  <br>
 
-<br>
-<br />
+\
 
 - **Cache database**: Redis, Celery  <br>
 
-<br>
-<br />
+\
+
 
 ## Setup
 
