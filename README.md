@@ -36,15 +36,33 @@ We will use these technologies to manage our application:
 
 - **Backend**: Django rest framework  <br>
 
+<br>
+<br />
+
 - **Frontend**: React  <br>
+
+<br>
+<br />
 
 - **DevOps**: Docker  <br>
 
+<br>
+<br />
+
 - **Database**:PostgreSQL  <br>
+
+<br>
+<br />
 
 - **Authentication**: OTP  <br>
 
+<br>
+<br />
+
 - **Cache database**: Redis, Celery  <br>
+
+<br>
+<br />
 
 ## Setup
 
