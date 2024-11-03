@@ -30,6 +30,13 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist',
     'django_filters',
     'corsheaders',
+
+    # Local app
+    'user.apps.UserConfig',
+    'store.apps.StoreConfig',
+    'payment.apps.PaymentConfig',
+    'dashboard.apps.DashboardConfig',
+    'club.apps.ClubConfig',
 ]
 
 MIDDLEWARE = [
