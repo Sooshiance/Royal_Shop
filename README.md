@@ -10,13 +10,12 @@ If you wanna features like `Notification`, `Role base` system & etc. clone the r
 Table of contents:
 </h2>
 
-<a href="#feature">Features</a>
-<a></a>
-<a></a>
-<a></a>
-<a></a>
-<a></a>
-<a></a>
+<a href="##features">Features</a>
+<a href="##technology stacks">Technology Stack</a>
+<a href="##setup">Setup</a>
+<a href="##backend">Backend Documentation</a>
+<a href="##frontend">Frontend Documentation</a>
+<a href="##contributing">Contributing</a>
 
 ## Features
 
@@ -30,3 +29,48 @@ This platform has these features like:
 - Payment Integration
 - Progress tracking
 - Coupon scenarios
+
+## Technology Stacks
+
+We will use these technologies to manage our application:
+
+- **Backend**: Django rest framework
+- **Frontend**: React
+- **DevOps**: Docker
+- **Database**:PostgreSQL
+- **Authentication**: OTP
+- **Cache database**: Redis, Celery
+
+## Setup
+
+We use **Docker** to containerize backend and frontend together.
+
+## Backend
+
+I will use DDD design pattern for **Royal** shop.
+
+We have 5 main Django-applications here:
+- ***`user`***: to let users create and manage their accounts.
+- ***`store`***: to let users create and manage their carts, orders etc.
+- ***`dashboard`***: to let admin see the application status
+- ***`club`***: to let customers share their experiences with our app
+- ***`payment`***: if any customer wants to buy something, go ahead and allow him/her
+
+## Frontend
+
+## Contributing
+
+If you wanna create new features like **Vendor** or **Notification**, follow these steps:
+
+- clone the repository:
+        git clone remote_address
+
+- create and switch to your feature branch:
+        git checkout -b vendor_feature
+
+- make your changes to the project 
+
+- push your code to remote repository
+        git push -u origin vendor_feature
+
+- pull your request to remote repo
