@@ -68,14 +68,17 @@ We have 5 main Django-applications here:
 If you wanna create new features like **Vendor** or **Notification**, follow these steps:
 
 - clone the repository:
+
         git clone remote_address
 
 - create and switch to your feature branch:
+
         git checkout -b vendor_feature
 
 - make your changes to the project 
 
 - push your code to remote repository
+
         git push -u origin vendor_feature
 
 - pull your request to remote repo
