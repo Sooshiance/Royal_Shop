@@ -34,17 +34,17 @@ This platform has these features like:
 
 We will use these technologies to manage our application:
 
-- **Backend**: Django rest framework
+- **Backend**: Django rest framework 
 
-- **Frontend**: React
+- **Frontend**: React 
 
-- **DevOps**: Docker
+- **DevOps**: Docker 
 
-- **Database**:PostgreSQL
+- **Database**:PostgreSQL 
 
-- **Authentication**: OTP
+- **Authentication**: OTP 
 
-- **Cache database**: Redis, Celery
+- **Cache database**: Redis, Celery 
 
 ## Setup
 
