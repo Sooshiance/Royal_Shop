@@ -46,13 +46,11 @@ We will use these technologies to manage our application:
 
 - **DevOps**: Docker  <br>
 
-<br>
-<br />
+-
 
 - **Database**:PostgreSQL  <br>
 
-<br>
-<br />
+-
 
 - **Authentication**: OTP  <br>
 
