@@ -59,7 +59,7 @@ We use **Docker** to containerize backend and frontend together.
 
 ## Backend
 
-I will use DDD design pattern for **Royal** shop.
+I will use Service-Repository design pattern for **Royal** shop.
 
 We have 5 main Django-applications here:
 - ***`user`***: to let users create and manage their accounts.
