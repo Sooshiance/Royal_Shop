@@ -102,7 +102,7 @@ class UserCoupon(models.Model):
     numbers     = RegexValidator(regex=r"^[0-9]*$")
     user        = models.ForeignKey(User, on_delete=models.CASCADE)
     coupon      = models.ForeignKey(Coupon, on_delete=models.CASCADE)
-    coupon_code = models.CharField(max_length=5, validators=[numbers])
+    coupon_code = models.CharField(max_length=5, validators=[numbers], unique=True)
     is_used     = models.BooleanField(default=False)
     is_active   = models.BooleanField(default=True)
     created_at  = models.DateTimeField(auto_now_add=True)

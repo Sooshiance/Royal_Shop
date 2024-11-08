@@ -217,8 +217,8 @@ class UserCouponRepository:
     @staticmethod
     def check_user_coupon(user:User, code:int):
         try:
-            uc:UserCoupon = UserCoupon.objects.filter(user=user)
-            if uc.coupon_code != code:
+            uc:UserCoupon = UserCoupon.objects.filter(user=user, coupon_code=code)
+            if uc.coupon_code != code or uc.is_used==True or uc.is_active==False:
                 raise ValidationError("No valid coupon")
             c:Decimal = uc.coupon.checkout
             return uc, c
