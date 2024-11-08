@@ -104,6 +104,10 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+# TODO: Change the default User model
+AUTH_USER_MODEL = "user.User"
+
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
