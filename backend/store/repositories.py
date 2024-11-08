@@ -1,4 +1,5 @@
 # repositories.py
+from decimal import Decimal
 from django.db import transaction
 
 from rest_framework.exceptions import ValidationError
@@ -27,8 +28,8 @@ class CategoryRepository:
     def get_category_by_id(cid):
         try:
             return Category.objects.get(cid=cid)
-        except:
-            raise ValidationError("no object")
+        except Exception as e:
+            raise ValidationError(e)
 
     @staticmethod
     def create_category(data):
@@ -52,7 +53,7 @@ class CategoryRepository:
         try:
             Category.objects.get(cid=cid).delete()
         except Exception as e:
-            raise ValidationError("no object to delete")
+            raise ValidationError(e)
 
 
 class BrandRepository:
@@ -65,7 +66,7 @@ class BrandRepository:
         try:
             return Brand.objects.get(bid=bid)
         except Exception as e:
-            raise ValidationError("")
+            raise ValidationError(e)
 
     @staticmethod
     def create_brand(data):
@@ -78,7 +79,7 @@ class BrandRepository:
         try:
             brand = Brand.objects.get(bid=bid)
         except Exception as e:
-            raise ValidationError("")
+            raise ValidationError(e)
         for key, value in data.items():
             setattr(brand, key, value)
         brand.save()
@@ -88,8 +89,8 @@ class BrandRepository:
     def delete_brand(bid):
         try:
             Brand.objects.get(bid=bid).delete()
-        except:
-            raise ValidationError("")
+        except Exception as e:
+            raise ValidationError(e)
 
 
 class ProductRepository:
@@ -102,10 +103,10 @@ class ProductRepository:
         try:
             return Product.objects.get(pid=pid).defer("created_at")
         except Exception as e:
-            raise ValidationError("")
+            raise ValidationError(e)
 
     @staticmethod
-    def create_product(data):
+    def create_product(data)-> Product:
         product = Product.objects.create(**data)
         product.save()
         return product
@@ -115,7 +116,7 @@ class ProductRepository:
         try:
             product = Product.objects.get(pid=pid)
         except Exception as e:
-            raise ValidationError("")
+            raise ValidationError(e)
         for key, value in data.items():
             setattr(product, key, value)
         product.save()
@@ -126,7 +127,7 @@ class ProductRepository:
         try:
             Product.objects.get(pid=pid).delete()
         except Exception as e:
-            raise ValidationError("")
+            raise ValidationError(e)
 
 
 class GalleryRepository:
@@ -136,7 +137,7 @@ class GalleryRepository:
 
     @staticmethod
     def create_gallery_item(data):
-        gallery_item = Gallery(**data)
+        gallery_item = Gallery.objects.create(**data)
         gallery_item.save()
         return gallery_item
 
@@ -148,7 +149,7 @@ class FeatureRepository:
 
     @staticmethod
     def create_feature(data):
-        feature = Feature(**data)
+        feature = Feature.objects.create(**data)
         feature.save()
         return feature
     
@@ -157,7 +158,7 @@ class FeatureRepository:
         try:
             feature = Feature.objects.get(id=fid)
         except Exception as e:
-            raise ValidationError("")
+            raise ValidationError(e)
         for key, value in data.items():
             setattr(feature, key, value)
         feature.save()
@@ -170,11 +171,11 @@ class CouponRepository:
         try:
             return Coupon.objects.get(cid=coupon_id)
         except Exception as e:
-            raise ValidationError("")
+            raise ValidationError(e)
 
     @staticmethod
     def create_coupon(data):
-        coupon = Coupon(**data)
+        coupon = Coupon.objects.create(**data)
         coupon.save()
         return coupon
     
@@ -187,14 +188,14 @@ class CouponRepository:
             coupon.save()
             return coupon
         except Exception as e:
-            raise ValidationError("")
+            raise ValidationError(e)
     
     @staticmethod
     def delete_coupon(cid):
         try:
             Coupon.objects.delete(cid)
         except Exception as e:
-            raise ValidationError("")
+            raise ValidationError(e)
 
 
 class UserCouponRepository:
@@ -207,18 +208,29 @@ class UserCouponRepository:
         try:
             uc = UserCoupon.objects.get(uc_id=uc_id)
         except Exception as e:
-            raise ValidationError("")
+            raise ValidationError(e)
         for key, value in data.items():
             setattr(uc, key, value)
         uc.save()
         return uc
     
     @staticmethod
+    def check_user_coupon(user:User, code:int):
+        try:
+            uc:UserCoupon = UserCoupon.objects.filter(user=user)
+            if uc.coupon_code != code:
+                raise ValidationError("No valid coupon")
+            c:Decimal = uc.coupon.checkout
+            return uc, c
+        except Exception as e:
+            raise ValidationError(e)
+    
+    @staticmethod
     def delete_user_coupon(uc_id):
         try:
             UserCoupon.objects.delete(uc_id=uc_id)
         except Exception as e:
-            raise ValidationError("")
+            raise ValidationError(e)
 
 
 class CartRepository:
@@ -265,7 +277,7 @@ class OrderRepository:
         try:
             return Order.objects.get(oid=order_id)
         except Exception as e:
-            raise ValidationError("")
+            raise ValidationError(e)
 
 
 class OrderItemRepository:

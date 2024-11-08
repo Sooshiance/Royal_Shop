@@ -44,6 +44,7 @@ class CouponAdmin(admin.ModelAdmin):
 class UserCouponAdmin(admin.ModelAdmin):
     list_display = ('user', 'is_used', 'is_active')
     list_filter = ['is_used', 'is_active']
+    readonly_fields = ['created_at']
 
 
 class CartAdmin(admin.ModelAdmin):
@@ -55,7 +56,7 @@ class OrderAdmin(admin.ModelAdmin):
 
 
 class OrderItemAdmin(admin.ModelAdmin):
-    list_display = ['user', 'cart']
+    list_display = ['user', 'order']
 
 
 class WishListAdmin(admin.ModelAdmin):

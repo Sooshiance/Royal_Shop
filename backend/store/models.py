@@ -79,8 +79,8 @@ class Gallery(models.Model):
 
 class Feature(models.Model):
     product     = models.ForeignKey(Product, models.CASCADE)
-    title       = models.CharField(max_length=50)
-    explanation = models.CharField(max_length=20, blank=True, null=True)
+    title       = models.CharField(max_length=25)
+    explanation = models.CharField(max_length=25, blank=True, null=True)
     description = models.CharField(max_length=255, blank=True, null=True)
 
     def __str__(self):
@@ -101,7 +101,7 @@ class Coupon(models.Model):
 class UserCoupon(models.Model):
     numbers     = RegexValidator(regex=r"^[0-9]*$")
     user        = models.ForeignKey(User, on_delete=models.CASCADE)
-    coupon      = models.ForeignKey(Coupon, on_delete=models.CASCADE, blank=True, null=True)
+    coupon      = models.ForeignKey(Coupon, on_delete=models.CASCADE)
     coupon_code = models.CharField(max_length=5, validators=[numbers])
     is_used     = models.BooleanField(default=False)
     is_active   = models.BooleanField(default=True)
