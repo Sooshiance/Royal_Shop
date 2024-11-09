@@ -9,7 +9,9 @@ urlpatterns = [
     # TODO: Change the path to something else
     path('online-royal/nonsense/admin/', admin.site.urls),
 
-    path("api/store/", include("store.urls")),
+    path("api/v1/user", include("user.urls")),
+
+    path("api/v1/store/", include("store.urls")),
 
 ]
 
