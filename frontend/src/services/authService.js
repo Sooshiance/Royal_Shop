@@ -1,3 +1,4 @@
+// src/services/authServices
 import apiCall from '../services/apiCall';
 import { loginSuccess, logoutSuccess } from '../context/auth/authSlice';
 import { store } from '../context/store';
@@ -5,7 +6,7 @@ import { store } from '../context/store';
 const authService = {
     login: async (credentials) => {
         try {
-            const response = await apiCall.post('user/access/', credentials);
+            const response = await apiCall.post('user/token/', credentials);
             const userData = response.data;
 
             // Save tokens to local storage

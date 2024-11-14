@@ -2,7 +2,7 @@
 
 Welcome to ***`Royal online shop`*** platform!
 
-<img src="./preview/Royal Shop.jpeg" />
+<img src="./preview/Royal Shop.jpg" />
 
 This platform will let users to manage online shopping.
 
