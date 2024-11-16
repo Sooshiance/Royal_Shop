@@ -13,6 +13,8 @@ urlpatterns = [
 
     path("api/v1/store/", include("store.urls")),
 
+    path("api/v1/club/", include("club.urls")),
+
 ]
 
 
