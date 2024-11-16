@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import Header from '../Header';
 import Footer from '../Footer';
 import apiCall from '../../services/apiCall';
+import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
 
 const Products = () => {
     const [products, setProducts] = useState([]);

@@ -169,7 +169,7 @@ class CouponRepository:
     @staticmethod
     def get_coupon_by_id(coupon_id):
         try:
-            return Coupon.objects.get(cid=coupon_id)
+            return Coupon.objects.get(pk=coupon_id)
         except Exception as e:
             raise ValidationError(e)
 
@@ -180,9 +180,9 @@ class CouponRepository:
         return coupon
     
     @staticmethod
-    def update_coupon(cid, data):
+    def update_coupon(pk, data):
         try:
-            coupon = Coupon.objects.get(cid)
+            coupon = Coupon.objects.get(pk)
             for key, value in data.items():
                 setattr(coupon, key, value)
             coupon.save()
@@ -191,9 +191,9 @@ class CouponRepository:
             raise ValidationError(e)
     
     @staticmethod
-    def delete_coupon(cid):
+    def delete_coupon(pk):
         try:
-            Coupon.objects.delete(cid)
+            Coupon.objects.delete(pk)
         except Exception as e:
             raise ValidationError(e)
 
@@ -264,6 +264,8 @@ class CartRepository:
 class OrderRepository:
     @staticmethod
     def create_order(user:User, cart:Cart):
+        if not cart.products_price:
+            raise ValidationError("Cart can not be empty")
         order = Order.objects.create(user=user, cart=cart, total_price=cart.products_price)
         return order
 

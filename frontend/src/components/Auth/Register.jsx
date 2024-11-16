@@ -6,7 +6,7 @@ const Register = () => {
     return (
         <>
             <Header />
-            Login Page
+            Register Page
             <Footer />
         </>
     )

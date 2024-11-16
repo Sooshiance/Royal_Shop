@@ -76,14 +76,22 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 
 # TODO: Change the default database
+# DATABASES = {
+# 'default': {
+#     'ENGINE': 'django.db.backends.postgresql',
+#     'NAME': config('DB_NAME'),
+#     'USER': config('DB_USER'),
+#     'HOST': config('DB_HOST'),
+#     'PASSWORD': config('DB_PASSWORD'),
+#     'PORT': '5432',
+#     }
+# }
+
+
 DATABASES = {
-'default': {
-    'ENGINE': 'django.db.backends.postgresql',
-    'NAME': config('DB_NAME'),
-    'USER': config('DB_USER'),
-    'HOST': config('DB_HOST'),
-    'PASSWORD': config('DB_PASSWORD'),
-    'PORT': '5432',
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 

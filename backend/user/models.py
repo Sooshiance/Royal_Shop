@@ -46,7 +46,7 @@ class AllUser(BaseUserManager):
 class User(AbstractBaseUser, PermissionsMixin):
     uid          = ShortUUIDField(max_length=20, db_index=True, unique=True, alphabet="0123456789abcdefghij")
     # Users can send phone or email to `username` field
-    username     = models.TextField(max_length=144, unique=True)
+    username     = models.TextField(unique=True)
     # If phone was sent, this flag will become `True`
     is_phone     = models.BooleanField(default=False)
     # If email was sent, this flag will become `True`

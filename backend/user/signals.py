@@ -9,11 +9,7 @@ def create_profile(sender, instance, created, **kwargs):
         user=instance
         new_profile = Profile.objects.create(
             user=user,
-            email=user.email,
-            phone=user.phone,
             username= user.username,
-            first_name=user.first_name,
-            last_name=user.last_name,
         )
 
 
@@ -21,12 +17,7 @@ def create_profile(sender, instance, created, **kwargs):
 def update_user(sender, instance, **kwargs):
     if instance.pk:
         user = instance.user
-        user.phone = instance.phone
-        user.is_private = instance.is_private
         user.username = instance.username
-        user.email = instance.email
-        user.first_name = instance.first_name
-        user.last_name = instance.last_name
         user.save()
 
 
