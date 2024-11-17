@@ -42,18 +42,18 @@ This platform has these features like:
 We will use these technologies to manage our application:
 
 
-- **Backend**: Django rest framework \ 
+- **Backend**: Django rest framework
 
-- **Frontend**: React \ 
+- **Frontend**: React 
 
-- **DevOps**: Docker \ 
+- **DevOps**: Docker
 
-- **Database**:PostgreSQL \ 
+- **Database**:PostgreSQL
 
-- **Authentication**: OTP \ 
+- **Authentication**: OTP 
 
-- **Cache database**: Redis, Celery \ 
-   
+- **Cache database**: Redis, Celery
+
 
 ## Setup
 
@@ -69,6 +69,14 @@ We have 5 main Django-applications here:
 - ***`dashboard`***: to let admin see the application status
 - ***`club`***: to let customers share their experiences with our app
 - ***`payment`***: if any customer wants to buy something, go ahead and allow him/her
+
+The first concept in designing a good backend is ER diagram.
+
+Here is the core functionalities of our ECommerce with ER:
+
+<img src="./preview/ecommerce.png" />
+
+of course this is not the whole Data Base of our api but, It contains the main idea of our ECommerce.
 
 ## Frontend
 
