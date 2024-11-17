@@ -6,7 +6,7 @@ Welcome to ***`Royal online shop`*** platform!
 
 This platform will let users to manage online shopping.
 
-If you wanna features like `Notification`, `Role base` system & etc. clone the repo create new branch, make changes to the project and finally push your code.
+If you wanna add features like `Notification`, `Role base` system & etc. clone the repo create new branch, make changes to the project and finally push your code.
 
 <h2>
 Table of contents:

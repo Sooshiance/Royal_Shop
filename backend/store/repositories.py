@@ -22,12 +22,12 @@ from .models import (User,
 class CategoryRepository:
     @staticmethod
     def get_all_categories():
-        return Category.objects.all().only("title", "thumbnail")
+        return Category.objects.all().only("category_name", "thumbnail")
 
     @staticmethod
-    def get_category_by_id(cid):
+    def get_category_by_id(pk):
         try:
-            return Category.objects.get(cid=cid)
+            return Category.objects.get(pk=pk)
         except Exception as e:
             raise ValidationError(e)
 
@@ -38,20 +38,20 @@ class CategoryRepository:
         return category
 
     @staticmethod
-    def update_category(cid, data):
+    def update_category(pk, data):
         try:
-            category = Category.objects.get(cid=cid)
+            category = Category.objects.get(pk=pk)
         except Exception as e:
-            raise ValidationError("no object to update")
+            raise ValidationError(e)
         for key, value in data.items():
             setattr(category, key, value)
         category.save()
         return category
 
     @staticmethod
-    def delete_category(cid):
+    def delete_category(pk):
         try:
-            Category.objects.get(cid=cid).delete()
+            Category.objects.get(pk=pk).delete()
         except Exception as e:
             raise ValidationError(e)
 
@@ -59,12 +59,12 @@ class CategoryRepository:
 class BrandRepository:
     @staticmethod
     def get_all_brands():
-        return Brand.objects.all().only("title", "thumbnail")
+        return Brand.objects.all().only("brand_name", "thumbnail")
 
     @staticmethod
-    def get_brand_by_id(bid):
+    def get_brand_by_id(pk):
         try:
-            return Brand.objects.get(bid=bid)
+            return Brand.objects.get(pk=pk)
         except Exception as e:
             raise ValidationError(e)
 
@@ -75,9 +75,9 @@ class BrandRepository:
         return brand
 
     @staticmethod
-    def update_brand(bid, data):
+    def update_brand(pk, data):
         try:
-            brand = Brand.objects.get(bid=bid)
+            brand = Brand.objects.get(pk=pk)
         except Exception as e:
             raise ValidationError(e)
         for key, value in data.items():
@@ -86,9 +86,9 @@ class BrandRepository:
         return brand
 
     @staticmethod
-    def delete_brand(bid):
+    def delete_brand(pk):
         try:
-            Brand.objects.get(bid=bid).delete()
+            Brand.objects.get(pk=pk).delete()
         except Exception as e:
             raise ValidationError(e)
 
@@ -96,12 +96,12 @@ class BrandRepository:
 class ProductRepository:
     @staticmethod
     def get_all_products():
-        return Product.objects.all().only("pid", "title", "thumbnail", "old_price", "price")
+        return Product.objects.all().only("pk", "product_title", "thumbnail", "old_price", "price")
 
     @staticmethod
-    def get_product_by_id(pid):
+    def get_product_by_id(pk):
         try:
-            return Product.objects.get(pid=pid).defer("created_at")
+            return Product.objects.get(pk=pk)
         except Exception as e:
             raise ValidationError(e)
 
@@ -112,9 +112,9 @@ class ProductRepository:
         return product
 
     @staticmethod
-    def update_product(pid, data):
+    def update_product(pk, data):
         try:
-            product = Product.objects.get(pid=pid)
+            product = Product.objects.get(pk=pk)
         except Exception as e:
             raise ValidationError(e)
         for key, value in data.items():
@@ -123,9 +123,9 @@ class ProductRepository:
         return product
 
     @staticmethod
-    def delete_product(pid):
+    def delete_product(pk):
         try:
-            Product.objects.get(pid=pid).delete()
+            Product.objects.get(pk=pk).delete()
         except Exception as e:
             raise ValidationError(e)
 

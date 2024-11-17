@@ -25,15 +25,15 @@ class FeatureAdmin(admin.TabularInline):
 
 
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('title',)
+    list_display = ('category_name',)
 
 
 class BrandAdmin(admin.ModelAdmin):
-    list_display = ('title',)
+    list_display = ('brand_name',)
 
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('title',)
+    list_display = ('product_title',)
     inlines = [GalleryAdmin, FeatureAdmin]
 
 

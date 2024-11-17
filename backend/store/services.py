@@ -19,20 +19,20 @@ class CategoryService:
         return CategoryRepository.get_all_categories()
     
     @staticmethod
-    def get_single_category(cid):
-        return CategoryRepository.get_category_by_id(cid)
+    def get_single_category(pk):
+        return CategoryRepository.get_category_by_id(pk)
 
     @staticmethod
     def create_category(data):
         return CategoryRepository.create_category(data)
 
     @staticmethod
-    def update_category(cid, data):
-        return CategoryRepository.update_category(cid, data)
+    def update_category(pk, data):
+        return CategoryRepository.update_category(pk, data)
     
     @staticmethod
-    def delete_category(cid):
-        return CategoryRepository.delete_category(cid)
+    def delete_category(pk):
+        return CategoryRepository.delete_category(pk)
 
 
 class BrandService:
@@ -41,16 +41,16 @@ class BrandService:
         return BrandRepository.get_all_brands()
     
     @staticmethod
-    def get_single_brand(bid):
-        return BrandRepository.get_brand_by_id(bid)
+    def get_single_brand(pk):
+        return BrandRepository.get_brand_by_id(pk)
 
     @staticmethod
     def create_brand(data):
         return BrandRepository.create_brand(data)
 
     @staticmethod
-    def delete_brand(bid):
-        return BrandRepository.delete_brand(bid)
+    def delete_brand(pk):
+        return BrandRepository.delete_brand(pk)
 
 
 class ProductService:
@@ -59,20 +59,20 @@ class ProductService:
         return ProductRepository.get_all_products()
     
     @staticmethod
-    def get_single_product(pid):
-        return ProductRepository.get_product_by_id(pid)
+    def get_single_product(pk):
+        return ProductRepository.get_product_by_id(pk)
 
     @staticmethod
     def create_product(data):
         return ProductRepository.create_product(data)
 
     @staticmethod
-    def update_product(pid, data):
-        return ProductRepository.update_product(pid, data)
+    def update_product(pk, data):
+        return ProductRepository.update_product(pk, data)
     
     @staticmethod
-    def delete_product(pid):
-        return ProductRepository.delete_product(pid)
+    def delete_product(pk):
+        return ProductRepository.delete_product(pk)
 
 
 class GalleryService:

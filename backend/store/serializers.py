@@ -42,30 +42,27 @@ class FeatureSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class AllProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = ['product_title', 'thumbnail', 'old_price', 'price', 'pk']
+
+
 class ProductSerializer(serializers.ModelSerializer):
     
-    gallery = GallerySerializer(many=True, read_only=True)
-    feature = FeatureSerializer(many=True, read_only=True)
+    category = CategorySerializer(many=True, read_only=True)
+    brand = BrandSerializer(many=True, read_only=True)
 
     class Meta:
         model = Product
         fields = ['category',
                   'brand',
-                  'pid',
-                  'title',
+                  'product_title',
                   'thumbnail',
                   'old_price',
                   'price',
-                  'shipping_amount',
-                  'off',
-                  'barcode',
-                  'weight',
-                  'stock_qty',
-                  'in_stock',
-                  'actualPrice',
-                  'gallery',
-                  'feature',
-                  ]
+                  'pk',
+                   ]
 
 
 class CouponSerializer(serializers.ModelSerializer):
@@ -75,23 +72,30 @@ class CouponSerializer(serializers.ModelSerializer):
 
 
 class UserCouponSerializer(serializers.ModelSerializer):
-    user = UserSerializer()
+    
+    user = UserSerializer(many=True, read_only=True)
     
     class Meta:
         model = UserCoupon
-        exclude = ['user']
+        fields = "__all__"
 
 
 class CartSerializer(serializers.ModelSerializer):
+
+    user = UserSerializer(many=True, read_only=True)
+
     class Meta:
         model = Cart
-        exclude = ['user', 'products_price']
+        exclude = ['products_price']
 
 
 class OrderSerializer(serializers.ModelSerializer):
+
+    user = UserSerializer(many=True, read_only=True)
+
     class Meta:
         model = Order
-        exclude = ['user']
+        fields = "__all__"
 
 
 class OrderItemSerializer(serializers.ModelSerializer):
@@ -101,6 +105,9 @@ class OrderItemSerializer(serializers.ModelSerializer):
 
 
 class WishListSerializer(serializers.ModelSerializer):
+
+    user = UserSerializer(many=True, read_only=True)
+
     class Meta:
         model = WishList
         exclude = ['user']

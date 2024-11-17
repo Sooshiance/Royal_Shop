@@ -10,32 +10,33 @@ from user.models import User
 
 
 class Category(models.Model):
-    title       = models.CharField(max_length=144)
-    thumbnail   = models.ImageField(upload_to='category/')
-    description = models.CharField(max_length=255)
+    category_name = models.CharField(max_length=144)
+    thumbnail     = models.ImageField(upload_to='category/')
+    description   = models.CharField(max_length=255)
 
     class Meta:
         verbose_name = 'Category'
         verbose_name_plural = 'Categories'
 
     def __str__(self):
-        return self.title
+        return self.category_name
 
 
 class Brand(models.Model):
-    title       = models.CharField(max_length=144)
+    brand_name  = models.CharField(max_length=144)
     thumbnail   = models.ImageField(upload_to='brand/')
     description = models.CharField(max_length=255)
 
     def __str__(self):
-        return self.title
+        return self.brand_name
 
 
 class Product(models.Model):
     category        = models.ForeignKey(Category, on_delete=models.CASCADE)
     brand           = models.ForeignKey(Brand, on_delete=models.CASCADE)
-    title           = models.CharField(max_length=144)
-    thumbnail       = models.ImageField(upload_to='product/')
+    product_title   = models.CharField(max_length=144, blank=True, null=True)
+    description     = models.CharField(max_length=255, blank=True, null=True)
+    thumbnail       = models.ImageField(upload_to='product/', blank=True, null=True)
     old_price       = models.DecimalField(max_digits=12, decimal_places=2, default=0)
     price           = models.DecimalField(max_digits=12, decimal_places=2, default=0)
     shipping_amount = models.DecimalField(max_digits=12, decimal_places=2, default=0)
@@ -55,7 +56,7 @@ class Product(models.Model):
         return Feature.objects.filter(product=self)
 
     def __str__(self):
-        return f"The {self.title} from {self.category} and its brand is {self.brand}"
+        return f"{self.category} and its brand is {self.brand}"
 
 
 class Gallery(models.Model):
@@ -128,7 +129,7 @@ class Cart(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.quantity} of {self.product.title} in cart of {self.user.username}"
+        return f"{self.quantity} of {self.product.product_name} in cart of {self.user.username}"
 
 
 class Order(models.Model):
@@ -182,4 +183,4 @@ class WishListItem(models.Model):
         verbose_name_plural = 'Wish List Items'
 
     def __str__(self):
-        return f"{self.product.title} in wishlist of {self.wishlist.user.username}"
+        return f"{self.product.product_name} in wishlist of {self.wishlist.user.username}"

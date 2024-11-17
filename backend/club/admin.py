@@ -8,7 +8,7 @@ class RateAdmin(admin.ModelAdmin):
 
 
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ['user']
+    list_display = ['user_profile']
     list_filter = ['status']
 
 

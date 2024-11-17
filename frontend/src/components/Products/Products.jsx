@@ -4,8 +4,10 @@ import Footer from '../Footer';
 import apiCall from '../../services/apiCall';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
+import { Link } from 'react-router-dom';
 
 const Products = () => {
+
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -13,9 +15,16 @@ const Products = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const data = await apiCall.get("products/");
-                if (data) {
-                    setProducts(data);
+                const response = await apiCall.get("store/all/products/");
+                console.log("API response:", response);
+                if (response && Array.isArray(response.data)) {
+                    setProducts(response.data);
+                } else if (Array.isArray(response.results)) {
+                    setProducts(response.results);
+                } else if (Array.isArray(response)) {
+                    setProducts(response);
+                } else {
+                    throw new Error("Data is not an array");
                 }
             } catch (error) {
                 setError(error);
@@ -34,17 +43,28 @@ const Products = () => {
     return (
         <>
             <Header />
-            {products.map((product) => (
-                <Card key={product.pid} style={{ width: '18rem' }}> {/* Make sure to use a unique key */}
-                    <Card.Body>
-                        <Card.Title>{product?.title}</Card.Title>
-                        <Card.Img src={product?.thumbnail} />
-                        <Card.Subtitle className="mb-2 text-muted">Card Subtitle</Card.Subtitle>
-                        <Card.Link>Card Link</Card.Link>
-                        <Card.Link>Another Link</Card.Link>
-                    </Card.Body>
-                </Card>
-            ))}
+            <div>
+                {products.length > 0 ? (
+                    products.map((product) => (
+                        <Card style={{ width: '18rem' }}>
+                            <Card.Img variant="top" src={product.thumbnail} />
+                            <Card.Body>
+                                <Card.Title>
+                                    {product.product_name}
+                                </Card.Title>
+                                <Card.Text>
+                                    {product?.description}
+                                </Card.Text>
+                                <Link to={`/products/${product.pk}`}>
+                                    <Button variant="primary">See the details</Button>
+                                </Link>
+                            </Card.Body>
+                        </Card>
+                    ))
+                ) : (
+                    <div>No products available</div>
+                )}
+            </div>
             <Footer />
         </>
     );
