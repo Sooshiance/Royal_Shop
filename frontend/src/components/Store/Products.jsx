@@ -15,7 +15,7 @@ const Products = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await apiCall.get("store/all/products/");
+                const response = await apiCall.get("store/product/");
                 console.log("API response:", response);
                 if (response && Array.isArray(response.data)) {
                     setProducts(response.data);
@@ -46,18 +46,26 @@ const Products = () => {
             <div>
                 {products.length > 0 ? (
                     products.map((product) => (
-                        <Card style={{ width: '18rem' }}>
+                        <Card key={product.pk} style={{ width: '18rem' }}>
                             <Card.Img variant="top" src={product.thumbnail} />
                             <Card.Body>
                                 <Card.Title>
-                                    {product.product_name}
+                                    {product.product_title}
                                 </Card.Title>
                                 <Card.Text>
-                                    {product?.description}
+                                    {product.description}
                                 </Card.Text>
                                 <Link to={`/products/${product.pk}`}>
                                     <Button variant="primary">See the details</Button>
                                 </Link>
+                                <Card.Footer className="text-muted">
+                                    <small className="text-muted col-6">
+                                        {product.price}
+                                    </small>
+                                    <small className="text-muted col-6">
+                                        {product.old_price}
+                                    </small>
+                                </Card.Footer>
                             </Card.Body>
                         </Card>
                     ))

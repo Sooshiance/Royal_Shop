@@ -9,7 +9,7 @@ import Card from 'react-bootstrap/Card';
 
 const Product = () => {
 
-  const [product, setProduct] = useState([]);
+  const [product, setProduct] = useState({});
   const { pk } = useParams();
 
   const [loading, setLoading] = useState(true);
@@ -19,14 +19,12 @@ const Product = () => {
 
     const fetchProduct = async () => {
       try {
-        const data = await apiCall.get(`store/each/product/${pk}/`);
-        if (data) {
-          setProduct(data);
-          console.log(data);
-        }
+        const response = await apiCall.get(`store/product/${pk}`);
+        console.log("API response:", response.data);
+        setProduct(response.data);
       } catch (error) {
-        console.log(error);
         setError(error);
+        console.log(error);
       } finally {
         setLoading(false);
       }
@@ -45,21 +43,22 @@ const Product = () => {
       <Card className="text-center">
         <Card.Body>
           <Card.Title>
-            {product.title}
+            {product.product_title}
           </Card.Title>
           <Card.Text>
-            With supporting text below as a natural lead-in to additional content.
+            {product.description}
           </Card.Text>
           <Button variant="primary">Add to  Cart</Button>
+          <Card.Img variant="top" src={product.thumbnail} />
         </Card.Body>
-        {/* <Card.Footer className="text-muted">
+        <Card.Footer className="text-muted">
           <small className="text-muted col-6">
             {product.price}
           </small>
           <small className="text-muted col-6">
             {product.old_price}
           </small>
-        </Card.Footer> */}
+        </Card.Footer>
       </Card>
       <Footer />
     </>
