@@ -21,13 +21,22 @@ from user.serializers import UserSerializer
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = "__all__"
+        fields = [
+            'pk',
+            'category_name',
+            'thumbnail',
+            'description',
+        ]
 
 
 class BrandSerializer(serializers.ModelSerializer):
     class Meta:
         model = Brand
-        fields = "__all__"
+        fields = ['pk',
+                  'brand_name',
+                  'thumbnail',
+                  'description',
+                  ]
 
 
 class GallerySerializer(serializers.ModelSerializer):
@@ -45,24 +54,35 @@ class FeatureSerializer(serializers.ModelSerializer):
 class AllProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ['product_title', 'thumbnail', 'old_price', 'price', 'pk']
+        fields = ['pk', 'product_title', 'thumbnail', 'price', 'old_price']
 
 
 class ProductSerializer(serializers.ModelSerializer):
     
-    category = CategorySerializer(many=True, read_only=True)
-    brand = BrandSerializer(many=True, read_only=True)
+    category = CategorySerializer(read_only=True)
+    brand = BrandSerializer(read_only=True)
+    gallery = GallerySerializer(many=True, read_only=True)
+    feature = FeatureSerializer(many=True, read_only=True)
 
     class Meta:
         model = Product
-        fields = ['category',
-                  'brand',
-                  'product_title',
-                  'thumbnail',
-                  'old_price',
-                  'price',
-                  'pk',
-                   ]
+        fields = (
+            'id',
+            'category',
+            'brand',
+            'product_title',
+            'thumbnail',
+            'old_price',
+            'shipping_amount',
+            'description',
+            'stock_qty',
+            'in_stock',
+            'price',
+            'off',
+            'actualPrice',
+            'gallery',
+            'feature',
+        )
 
 
 class CouponSerializer(serializers.ModelSerializer):

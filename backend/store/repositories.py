@@ -22,7 +22,7 @@ from .models import (User,
 class CategoryRepository:
     @staticmethod
     def get_all_categories():
-        return Category.objects.all().only("category_name", "thumbnail")
+        return Category.objects.all()
 
     @staticmethod
     def get_category_by_id(pk):
@@ -59,7 +59,7 @@ class CategoryRepository:
 class BrandRepository:
     @staticmethod
     def get_all_brands():
-        return Brand.objects.all().only("brand_name", "thumbnail")
+        return Brand.objects.all()
 
     @staticmethod
     def get_brand_by_id(pk):
@@ -220,7 +220,8 @@ class UserCouponRepository:
             uc:UserCoupon = UserCoupon.objects.filter(user=user, coupon_code=code)
             if uc.coupon_code != code or uc.is_used==True or uc.is_active==False:
                 raise ValidationError("No valid coupon")
-            c:Decimal = uc.coupon.checkout
+            c:Decimal = uc.objects.select_related('coupon').only('checkout')
+            print(f"checkout value ==== {c}")
             return uc, c
         except Exception as e:
             raise ValidationError(e)

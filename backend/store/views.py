@@ -4,7 +4,6 @@ from rest_framework import (permissions,
                             response,
                             generics)
 
-from .models import Product
 from .serializers import (CategorySerializer,
                           BrandSerializer,
                           ProductSerializer,
@@ -22,55 +21,37 @@ from .services import (CategoryService,
                        OrderItemService,)
 
 
-class CategoryAPIView(views.APIView):
-    permission_classes = [permissions.AllowAny]
+class AllCategoryGenericView(generics.ListAPIView):
+    serializer_class = CategorySerializer
+    queryset = CategoryService.get_all_categories()
 
-    def get(self, pk=None):
-        if pk:
-            category = CategoryService.get_single_category(pk)
-            srz = CategorySerializer(category)
-            return response.Response(srz, status=status.HTTP_200_OK)
-        categories = CategoryService.get_all_categories()
-        all_srz = CategorySerializer(categories)
-        return response.Response(all_srz, status=status.HTTP_200_OK)
+
+class CategoryGenericView(views.APIView):
+    def get(self, request, pk):
+        cat = CategoryService.get_single_category(pk)
+        srz = CategorySerializer(cat)
+        return response.Response(srz.data, status=status.HTTP_200_OK)
+
+
+class BrandsGenericView(generics.ListAPIView):
+    serializer_class = BrandSerializer
+    queryset = BrandService.get_all_brands()
 
 
 class BrandAPIView(views.APIView):
-    permission_classes = [permissions.AllowAny]
-
-    def get(self, pk=None):
-        if pk:
-            brand = BrandService.get_single_brand(pk)
-            srz = BrandSerializer(brand)
-            return response.Response(srz, status=status.HTTP_200_OK)
-        brand = BrandService.get_all_brands()
-        all_srz = BrandSerializer(brand)
-        return response.Response(all_srz, status=status.HTTP_200_OK)
+    def get(self, request, pk):
+        b = BrandService.get_single_brand(pk)
+        srz = BrandSerializer(b)
+        return response.Response(srz.data, status=status.HTTP_200_OK)
 
 
-class AllProductsGenericAPIView(generics.ListAPIView):
+class ProductsGenericAPIView(generics.ListAPIView):
     serializer_class = AllProductSerializer
-    
-    def get_queryset(self):
-        p = ProductService.get_all_products()
-        return p
+    queryset = ProductService.get_all_products()
 
 
-class ProductGenericAPIView(generics.RetrieveAPIView):
-    serializer_class = ProductSerializer
-
-    def get_object(self):
-        pk = self.kwargs['pk']
-        print(f"get object method ===== {pk}")
-        return pk
-
-    def get_queryset(self, request, *args, **kwargs):
-        pk = self.get_object()
-        print(f"get query set method ==== {pk}")
-        try:
-            p = Product.objects.get(pk=pk)
-        except Exception as e:
-            raise 
-        print(p.barcode)
-        p_srz = ProductSerializer(p)
-        return response.Response(p_srz.data, status=status.HTTP_200_OK)
+class ProductAPIView(views.APIView):
+    def get(self, request, pk):
+        p = ProductService.get_single_product(pk)
+        srz = ProductSerializer(p)
+        return response.Response(srz.data, status=status.HTTP_200_OK)

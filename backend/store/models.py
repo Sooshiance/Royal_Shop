@@ -41,8 +41,8 @@ class Product(models.Model):
     price           = models.DecimalField(max_digits=12, decimal_places=2, default=0)
     shipping_amount = models.DecimalField(max_digits=12, decimal_places=2, default=0)
     off             = models.DecimalField(max_digits=8, decimal_places=2, blank=True, null=True)
-    barcode         = models.DecimalField(max_digits=15, decimal_places=0)
-    weight          = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
+    # barcode         = models.DecimalField(max_digits=15, decimal_places=0)
+    # weight          = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
     stock_qty       = models.DecimalField(max_digits=10, decimal_places=0)
     in_stock        = models.BooleanField(default=True)
     actualPrice     = models.GeneratedField(expression=F("price") + F("shipping_amount") - F("off"),

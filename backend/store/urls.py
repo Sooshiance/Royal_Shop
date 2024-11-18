@@ -1,16 +1,20 @@
 from django.urls import path
 
-from .views import (CategoryAPIView,
+from .views import (AllCategoryGenericView,
+                    CategoryGenericView,
+                    BrandsGenericView,
                     BrandAPIView,
-                    AllProductsGenericAPIView,
-                    ProductGenericAPIView,)
+                    ProductsGenericAPIView,
+                    ProductAPIView,)
 
 
 app_name = "store"
 
 urlpatterns = [
-    path("category/<str:pk>/", CategoryAPIView.as_view(), name='category'),
-    path("brand/<str:pk>/", BrandAPIView.as_view(), name='brand'),
-    path("all/products/", AllProductsGenericAPIView.as_view(), name='products'),
-    path("each/product/<str:pk>/", ProductGenericAPIView.as_view(), name='product'),
+    path("category/", AllCategoryGenericView.as_view()),
+    path("category/<str:pk>/", CategoryGenericView.as_view()),
+    path("brand/", BrandsGenericView.as_view()),
+    path("brand/<str:pk>/", BrandAPIView.as_view()),
+    path("product/", ProductsGenericAPIView.as_view()),
+    path("product/<str:pk>/", ProductAPIView.as_view()),
 ]
