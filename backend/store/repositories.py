@@ -220,9 +220,16 @@ class UserCouponRepository:
             uc:UserCoupon = UserCoupon.objects.filter(user=user, coupon_code=code)
             if uc.coupon_code != code or uc.is_used==True or uc.is_active==False:
                 raise ValidationError("No valid coupon")
-            c:Decimal = uc.objects.select_related('coupon').only('checkout')
-            print(f"checkout value ==== {c}")
-            return uc, c
+            return uc
+        except Exception as e:
+            raise ValidationError(e)
+    
+    @staticmethod
+    def get_user_coupon_checkout(user:User, code:int):
+        try:
+            x = __class__.check_user_coupon(user, code)
+            c:Decimal = x.objects.select_related('coupon').only('checkout')
+            return c
         except Exception as e:
             raise ValidationError(e)
     
