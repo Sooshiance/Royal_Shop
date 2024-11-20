@@ -5,12 +5,17 @@ import apiCall from '../../services/apiCall';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { addProduct } from '../../context/cart/cartSlice';
+import Spinner from 'react-bootstrap/Spinner';
 
 const Products = () => {
 
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+
+    const dispatch = useDispatch();
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -37,7 +42,9 @@ const Products = () => {
         fetchProducts();
     }, []);
 
-    if (loading) return <div>Loading...</div>;
+    if (loading) return (<Spinner animation="border" role="status">
+        <span className="visually-hidden">Loading...</span>
+    </Spinner>);
     if (error) return <div>Error fetching products: {error.message}</div>;
 
     return (
@@ -49,6 +56,9 @@ const Products = () => {
                         <Card key={product.pk} style={{ width: '18rem' }}>
                             <Card.Img variant="top" src={product.thumbnail} />
                             <Card.Body>
+                                <Button onClick={() => dispatch(addProduct(product))}>
+                                    Add to Cart
+                                </Button>
                                 <Card.Title>
                                     {product.product_title}
                                 </Card.Title>

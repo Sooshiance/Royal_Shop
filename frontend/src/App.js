@@ -8,6 +8,7 @@ import Product from './components/Store/Product';
 import Login from './components/Auth/Login';
 import Logout from './components/Auth/Logout';
 import Profile from './components/Client/Profile';
+import CartItem from './components/Store/CartItem';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/products" element={<Products />} />
           <Route path="/products/:pk" element={<Product />} />
+          <Route path="/cart" element={<CartItem />} />
           <Route path="/login" element={<Login />} />
           <Route path="/logout" element={
             <PrivateRoute>

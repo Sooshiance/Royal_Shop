@@ -1,7 +1,7 @@
 // src/components/Header.jsx
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Navbar, Container, Nav, Form, FormControl, Button } from 'react-bootstrap';
+import { Navbar, Container, Nav } from 'react-bootstrap';
 import authService from '../services/authService';
 
 const Header = () => {
@@ -24,6 +24,7 @@ const Header = () => {
             >
               <Nav.Link as={Link} to="/">Home</Nav.Link>
               <Nav.Link as={Link} to="/products">All Products</Nav.Link>
+              <Nav.Link as={Link} to="/cart">Cart</Nav.Link>
               {isAuthenticated ? (
                 <>
                   <Nav.Link as={Link} to="/logout">Logout</Nav.Link>
