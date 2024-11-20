@@ -247,6 +247,11 @@ class CartRepository:
         return Cart.objects.filter(user=user)
 
     @staticmethod
+    def get_cart(pk:int ,user:User):
+        # Cart.objects 
+        return Cart.objects.filter(pk, user=user)
+
+    @staticmethod
     def add_to_cart(user:User, product:Product, quantity:int):
         cart_item, created = Cart.objects.get_or_create(
             user=user,

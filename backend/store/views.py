@@ -4,6 +4,8 @@ from rest_framework import (permissions,
                             response,
                             generics)
 
+from .models import (Product,
+                     Cart)
 from .serializers import (CategorySerializer,
                           BrandSerializer,
                           ProductSerializer,
@@ -55,3 +57,59 @@ class ProductAPIView(views.APIView):
         p = ProductService.get_single_product(pk)
         srz = ProductSerializer(p)
         return response.Response(srz.data, status=status.HTTP_200_OK)
+
+
+class CartView(views.APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        """Retrieve the user's cart."""
+        user = request.user
+        cart_items = CartService.get_user_cart(user)
+        serializer = CartSerializer(cart_items, many=True)
+        return response.Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request):
+        """Add a product to the cart."""
+        user = request.user
+        product_id = request.data.get('product_id')
+        quantity = request.data.get('quantity', 1)
+
+        try:
+            product = ProductService.get_single_product(product_id)
+        except Product.DoesNotExist:
+            return response.Response({'error': 'Product not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        cart_item = CartService.add_to_cart(user, product, quantity)
+        serializer = CartSerializer(cart_item)
+        return response.Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    def delete(self, request, pk):
+        """Remove an item from the cart."""
+        user = request.user
+
+        try:
+            cart_item = CartService.get_cart(pk, user)
+            if cart_item.exists():
+                CartService.remove_from_cart(cart_item.first())
+                return response.Response(status=status.HTTP_204_NO_CONTENT)
+            else:
+                return response.Response({'error': 'Cart item not found'}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return response.Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+    def put(self, request, pk):
+        """Update the quantity of a cart item."""
+        user = request.user
+        quantity = request.data.get('quantity')
+
+        try:
+            cart_item = CartService.get_cart(pk, user)
+            if cart_item.exists():
+                updated_cart_item = CartService.update_cart_item(cart_item.first(), quantity)
+                serializer = CartSerializer(updated_cart_item)
+                return response.Response(serializer.data, status=status.HTTP_200_OK)
+            else:
+                return response.Response({'error': 'Cart item not found'}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return response.Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)

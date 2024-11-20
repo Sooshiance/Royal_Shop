@@ -129,7 +129,7 @@ class Cart(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.quantity} of {self.product.product_name} in cart of {self.user.username}"
+        return f"{self.quantity} of {self.product.product_title} in cart of {self.user.username}"
 
 
 class Order(models.Model):

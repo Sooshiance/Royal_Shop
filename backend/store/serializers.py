@@ -92,7 +92,6 @@ class CouponSerializer(serializers.ModelSerializer):
 
 
 class UserCouponSerializer(serializers.ModelSerializer):
-    
     user = UserSerializer(many=True, read_only=True)
     
     class Meta:
@@ -101,12 +100,11 @@ class UserCouponSerializer(serializers.ModelSerializer):
 
 
 class CartSerializer(serializers.ModelSerializer):
-
     user = UserSerializer(many=True, read_only=True)
 
     class Meta:
         model = Cart
-        exclude = ['products_price']
+        fields = ['pk', 'user', 'product', 'quantity', 'realPrice', 'products_price']
 
 
 class OrderSerializer(serializers.ModelSerializer):

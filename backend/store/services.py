@@ -136,6 +136,10 @@ class CartService:
     def get_user_cart(user):
         return CartRepository.get_cart_by_user(user)
 
+    @staticmethod
+    def get_cart(pk, user):
+        return CartRepository.get_cart(pk, user)
+
 
 class OrderService:
     @staticmethod
