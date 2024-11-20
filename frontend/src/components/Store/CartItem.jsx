@@ -6,12 +6,17 @@ import { useSelector, useDispatch } from 'react-redux';
 import { removeProduct, clearCart, addProduct } from '../../context/cart/cartSlice';
 import { Container, Button } from 'react-bootstrap';
 import Card from 'react-bootstrap/Card';
+import { useNavigate } from 'react-router-dom';
 
 const CartItem = () => {
 
     const dispatch = useDispatch();
-
+    const navigate = useNavigate();
     const cartProducts = useSelector(state => state.cart.products);
+
+    const handleCheckout = () => {
+        navigate('/cart');
+    };
 
     return (
         <>
@@ -27,11 +32,12 @@ const CartItem = () => {
                                 <Card.Img height={250} width={250} variant="right" src={item.thumbnail} />
                                 <Card.Title>{item.product_title}</Card.Title>
                                 <Card.Text>{item.quantity}</Card.Text>
-                                <Button onClick={() => dispatch(addProduct(item.pk))} > Increase product quantity </Button>
+                                <Button onClick={() => dispatch(addProduct(item.pk))}>Increase product quantity</Button>
                                 <Button onClick={() => dispatch(removeProduct(item.pk))}>Remove</Button>
                             </Container>
                         ))}
                         <Button onClick={() => dispatch(clearCart())}>Clear Cart</Button>
+                        <Button onClick={handleCheckout}>Proceed to Checkout</Button>
                     </div>
                 )}
             </Container>

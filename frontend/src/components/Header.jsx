@@ -24,11 +24,12 @@ const Header = () => {
             >
               <Nav.Link as={Link} to="/">Home</Nav.Link>
               <Nav.Link as={Link} to="/products">All Products</Nav.Link>
-              <Nav.Link as={Link} to="/cart">Cart</Nav.Link>
+              <Nav.Link as={Link} to="/cart-item">Cart Item</Nav.Link>
               {isAuthenticated ? (
                 <>
                   <Nav.Link as={Link} to="/logout">Logout</Nav.Link>
                   <Nav.Link as={Link} to="/profile">Profile</Nav.Link>
+                  <Nav.Link as={Link} to="/cart">Cart</Nav.Link>
                 </>
               ) : (
                 <Nav.Link as={Link} to="/login">Login</Nav.Link>

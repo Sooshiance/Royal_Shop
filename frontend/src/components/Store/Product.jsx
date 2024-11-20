@@ -49,7 +49,7 @@ const Product = () => {
             {product.description}
           </Card.Text>
           <Button variant="primary">Add to  Cart</Button>
-          <Card.Img variant="top" src={product.thumbnail} />
+          <Card.Img height={250} width={250} variant="top" src={product.thumbnail} />
         </Card.Body>
         <Card.Footer className="text-muted">
           <small className="text-muted col-6">

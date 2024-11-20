@@ -42,9 +42,12 @@ const Products = () => {
         fetchProducts();
     }, []);
 
-    if (loading) return (<Spinner animation="border" role="status">
-        <span className="visually-hidden">Loading...</span>
-    </Spinner>);
+    if (loading) return (
+        <Spinner animation="border" role="status">
+            <span className="visually-hidden">Loading...</span>
+        </Spinner>
+    );
+
     if (error) return <div>Error fetching products: {error.message}</div>;
 
     return (
