@@ -15,6 +15,8 @@ urlpatterns = [
 
     path("api/v1/club/", include("club.urls")),
 
+    path("api/v1/dash-board/", include("dashboard.urls")),
+
 ]
 
 
