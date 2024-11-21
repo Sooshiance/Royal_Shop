@@ -18,7 +18,7 @@ class Rate(models.Model):
         return Rate.objects.filter(product=self.product).aggregate(Avg('vote'))['vote__avg']
     
     def __str__(self):
-        return f"{self.user_profile.username} has this opinion about {self.product.title}"
+        return f"{self.user_profile.username} has this opinion about {self.product.product_title}"
 
 
 class Comment(models.Model):
