@@ -13,6 +13,8 @@ const Cart = () => {
     const [cart, setCart] = useState([]);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         const fetchCart = async () => {
@@ -21,6 +23,9 @@ const Cart = () => {
                 setCart(data);
             } catch (error) {
                 console.error('Error fetching cart data:', error);
+                setError(error);
+            } finally {
+                setLoading(false);
             }
         };
 
@@ -36,6 +41,9 @@ const Cart = () => {
             });
         } catch (error) {
             console.error('Error adding product:', error);
+            setError(error)
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -49,8 +57,14 @@ const Cart = () => {
             });
         } catch (error) {
             console.error('Error removing product:', error);
+            setError(error);
+        } finally {
+            setLoading(false);
         }
     };
+
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div>Error fetching cart data: {error.message}</div>;
 
     return (
         <>

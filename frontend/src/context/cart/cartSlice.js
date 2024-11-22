@@ -11,10 +11,10 @@ const saveCartToLocalStorage = (cart) => {
 
 const cartSlice = createSlice({
     name: 'cart',
-    initialState: loadCartFromLocalStorage(), // Load cart from local storage
+    initialState: loadCartFromLocalStorage(),
     reducers: {
         addProduct(state, action) {
-            const { pk, thumbnail, product_title } = action.payload; // Destructure payload
+            const { pk, thumbnail, product_title } = action.payload;
             const existingProduct = state.products.find(product => product.pk === pk);
             if (existingProduct) {
                 existingProduct.quantity += 1;
