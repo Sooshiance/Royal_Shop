@@ -4,12 +4,12 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 from .enums import CommentType
 
-from user.models import Profile
+from user.models import User
 from store.models import Product
 
 
 class Rate(models.Model):
-    user_profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='rate_profile')
+    user_profile = models.ForeignKey(User, on_delete=models.CASCADE, related_name='rate_profile')
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='rate_product')
     vote = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
     txt = models.CharField(max_length=255, blank=True, null=True)
@@ -22,7 +22,7 @@ class Rate(models.Model):
 
 
 class Comment(models.Model):
-    user_profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='user_comment')
+    user_profile = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_comment')
     txt = models.CharField(max_length=255)
     status = models.PositiveSmallIntegerField(choices=CommentType.choices(), default=1)
 

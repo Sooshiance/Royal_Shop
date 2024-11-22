@@ -6,12 +6,11 @@ from .models import Rate, Comment, Product
 class RateRepository:
 
     @staticmethod
-    def create_rate(data):
-        return Rate.objects.create(**data)
-    
-    @staticmethod
     def get_rates_of_product(product:Product):
-        return Rate.objects.filter(product=product)
+        try:
+            return Rate.objects.filter(product=product)
+        except:
+            raise ValidationError("no product found!")
 
 
 class CommentRepository:

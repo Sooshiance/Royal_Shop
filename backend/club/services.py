@@ -7,10 +7,6 @@ class RateService:
     def read_all_rate_of_product(product:Product):
         return RateRepository.get_rates_of_product(product)
 
-    @staticmethod
-    def create_rate(data):
-        return RateRepository.create_rate(data)
-
 
 class CommentService:
     @staticmethod

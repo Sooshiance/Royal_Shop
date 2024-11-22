@@ -2,14 +2,10 @@ from rest_framework import serializers
 
 from .models import Rate, Comment
 
-from user.serializers import ProfileSerializer
-from store.serializers import ProductSerializer
-
 
 class RateSerializer(serializers.ModelSerializer):
-
-    user_profile = ProfileSerializer(many=True, read_only=True)
-    product = ProductSerializer(many=True, read_only=True)
+    user_profile = serializers.StringRelatedField(read_only=True)
+    product = serializers.StringRelatedField(read_only=True)
 
     class Meta:
         model = Rate
@@ -23,18 +19,15 @@ class RateSerializer(serializers.ModelSerializer):
         ]
     
     def validate(self, attrs):
-        
         vote = attrs.get("vote")
-
-        if 1 > vote > 5:
+        if vote < 1 or vote > 5:
             raise serializers.ValidationError("must be between 1 and 5")
-        
         return attrs
 
 
 class CommentSerializer(serializers.ModelSerializer):
 
-    user_profile = ProfileSerializer(many=True, read_only=True)
+    user_profile = serializers.StringRelatedField(read_only=True)
 
     class Meta:
         model = Comment

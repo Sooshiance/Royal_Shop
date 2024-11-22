@@ -1,14 +1,20 @@
 from django.urls import path
 
-from .views import (RateListView,
+from .views import (RateCreateView,
+                    RateListView,
+                    CommentCreateView,
                     CommentListView,
-                    CommentDetailView,)
+                    CommentUpdateView,
+                    CommentDeleteView,)
 
 
 app_name = "club"
 
 urlpatterns = [
-    path('rate/product/<str:product_id>/', RateListView.as_view(), name='rate-list'),
+    path('rates/<str:product_id>/', RateListView.as_view(), name='rate-list'),
+    path('rates/create/<int:product_id>/', RateCreateView.as_view(), name='rate-create'),
     path('comments/', CommentListView.as_view(), name='comment-list'),
-    path('comments/<str:comment_id>/', CommentDetailView.as_view(), name='comment-detail'),
+    path('comments/create/', CommentCreateView.as_view(), name='comment-create'),
+    path('comments/update/<int:pk>/', CommentUpdateView.as_view(), name='comment-update'),
+    path('comments/delete/<int:pk>/', CommentDeleteView.as_view(), name='comment-delete'),
 ]

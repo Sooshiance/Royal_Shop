@@ -56,7 +56,7 @@ class Product(models.Model):
         return Feature.objects.filter(product=self)
 
     def __str__(self):
-        return f"{self.category} and its brand is {self.brand}"
+        return f"{self.category.category_name} and its brand is {self.brand}"
 
 
 class Gallery(models.Model):
