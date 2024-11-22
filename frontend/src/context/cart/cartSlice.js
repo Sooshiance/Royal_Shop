@@ -1,4 +1,3 @@
-// src/context/cart/cartSlice.js
 import { createSlice } from '@reduxjs/toolkit';
 
 const loadCartFromLocalStorage = () => {
@@ -11,62 +10,32 @@ const saveCartToLocalStorage = (cart) => {
 };
 
 const cartSlice = createSlice({
-
     name: 'cart',
-
-    initialState: loadCartFromLocalStorage(),
-
+    initialState: loadCartFromLocalStorage(), // Load cart from local storage
     reducers: {
         addProduct(state, action) {
-            const newProduct = action.payload;
-            const existingProductIndex = state.products.findIndex(product => product.pk === newProduct.pk);
-
-            if (existingProductIndex === -1) {
-                state.products.push({ ...newProduct, quantity: 1 });
+            const { pk, thumbnail, product_title } = action.payload; // Destructure payload
+            const existingProduct = state.products.find(product => product.pk === pk);
+            if (existingProduct) {
+                existingProduct.quantity += 1;
             } else {
-                state.products[existingProductIndex].quantity++;
+                state.products.push({ pk, thumbnail, product_title, quantity: 1 });
             }
             saveCartToLocalStorage(state);
         },
-
         removeProduct(state, action) {
-            const productId = action.payload;
-            const existingProductIndex = state.products.findIndex(product => product.pk === productId);
-
-            if (existingProductIndex !== -1) {
-                if (state.products[existingProductIndex].quantity === 1) {
-                    state.products.splice(existingProductIndex, 1);
-                } else {
-                    state.products[existingProductIndex].quantity--;
-                }
-            } else {
-                console.warn(`Product with id ${productId} not found in cart.`);
+            const index = state.products.findIndex(product => product.pk === action.payload);
+            if (index !== -1) {
+                state.products.splice(index, 1);
             }
             saveCartToLocalStorage(state);
         },
-
         clearCart(state) {
             state.products = [];
             saveCartToLocalStorage(state);
-        },
-
-        updateProductQuantity(state, action) {
-            const { productId, quantity } = action.payload;
-            const existingProductIndex = state.products.findIndex(product => product.pk === productId);
-
-            if (existingProductIndex !== -1) {
-                if (quantity <= 0) {
-                    state.products.splice(existingProductIndex, 1);
-                } else {
-                    state.products[existingProductIndex].quantity = quantity;
-                }
-            } else {
-                console.warn(`Product with id ${productId} not found in cart.`);
-            }
-            saveCartToLocalStorage(state);
-        },
-    },
+        }
+    }
 });
 
-export const { addProduct, removeProduct, clearCart, updateProductQuantity } = cartSlice.actions;
+export const { addProduct, removeProduct, clearCart } = cartSlice.actions;
 export default cartSlice.reducer;

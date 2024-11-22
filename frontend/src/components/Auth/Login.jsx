@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import Header from '../Header';
 import Footer from '../Footer';
 import authService from '../../services/authService';
@@ -14,15 +14,15 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handleLogin = async (event) => {
-    
+
     event.preventDefault();
-    
+
     try {
       let loginData = {
         username,
         password
       };
-      
+
       await authService.login(loginData);
       navigate('/profile');
 

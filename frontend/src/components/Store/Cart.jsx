@@ -3,16 +3,16 @@ import { useSelector, useDispatch } from 'react-redux';
 import { sendWithAuth, fetchWithAuth } from '../../context/auth/authUtils';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { addProduct, removeProduct, clearCart, updateProductQuantity } from '../../context/cart/cartSlice';
+import { addProduct, removeProduct } from '../../context/cart/cartSlice';
 import Header from '../Header';
 import Footer from '../Footer';
 
 const Cart = () => {
 
+    const cartProducts = useSelector(state => state.cart.products);
     const [cart, setCart] = useState([]);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const cartProducts = useSelector(state => state.cart.products);
 
     useEffect(() => {
         const fetchCart = async () => {
@@ -52,19 +52,6 @@ const Cart = () => {
         }
     };
 
-    const handleUpdateQuantity = async (product, quantity) => {
-        dispatch(updateProductQuantity({ productId: product.pk, quantity }));
-        try {
-            await axios.put(`/store/cart/${product.pk}/`, { quantity }, {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem('accessToken')}`
-                }
-            });
-        } catch (error) {
-            console.error('Error updating quantity:', error);
-        }
-    };
-
     return (
         <>
             <Header />
@@ -80,11 +67,6 @@ const Cart = () => {
                             <p>Quantity: {item.quantity}</p>
                             <button onClick={() => handleAddProduct(item)}>Increase product quantity</button>
                             <button onClick={() => handleRemoveProduct(item)}>Remove</button>
-                            <input
-                                type="number"
-                                value={item.quantity}
-                                onChange={(e) => handleUpdateQuantity(item, parseInt(e.target.value))}
-                            />
                         </div>
                     ))}
                 </div>

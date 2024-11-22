@@ -1,4 +1,4 @@
-// src/components/Store/CartItem
+// // src/components/Store/CartItem
 import React from 'react';
 import Header from '../Header';
 import Footer from '../Footer';
@@ -9,12 +9,11 @@ import Card from 'react-bootstrap/Card';
 import { useNavigate } from 'react-router-dom';
 
 const CartItem = () => {
-
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const cartProducts = useSelector(state => state.cart.products);
 
-    const handleCheckout = () => {
+    const handleCart = () => {
         navigate('/cart');
     };
 
@@ -29,21 +28,25 @@ const CartItem = () => {
                     <div>
                         {cartProducts.map(item => (
                             <Container fluid key={item.pk}>
-                                <Card.Img height={250} width={250} variant="right" src={item.thumbnail} />
-                                <Card.Title>{item.product_title}</Card.Title>
-                                <Card.Text>{item.quantity}</Card.Text>
-                                <Button onClick={() => dispatch(addProduct(item.pk))}>Increase product quantity</Button>
-                                <Button onClick={() => dispatch(removeProduct(item.pk))}>Remove</Button>
+                                <Card>
+                                    <Card.Img height={250} width={250} variant="top" src={item.thumbnail} />
+                                    <Card.Body>
+                                        <Card.Title>{item.product_title}</Card.Title>
+                                        <Card.Text>Quantity: {item.quantity}</Card.Text>
+                                        <Button onClick={() => dispatch(addProduct(item))}>Increase product quantity</Button>
+                                        <Button onClick={() => dispatch(removeProduct(item.pk))}>Remove</Button>
+                                    </Card.Body>
+                                </Card>
                             </Container>
                         ))}
                         <Button onClick={() => dispatch(clearCart())}>Clear Cart</Button>
-                        <Button onClick={handleCheckout}>Proceed to Checkout</Button>
+                        <Button onClick={handleCart}>Proceed to Checkout</Button>
                     </div>
                 )}
             </Container>
             <Footer />
         </>
-    )
+    );
 }
 
-export default CartItem
+export default CartItem;
