@@ -1,3 +1,4 @@
+// src/context/cart/cartSlice.js
 import { createSlice } from '@reduxjs/toolkit';
 
 const loadCartFromLocalStorage = () => {

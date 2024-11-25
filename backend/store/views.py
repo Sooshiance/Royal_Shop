@@ -64,17 +64,16 @@ class CartView(views.APIView):
 
     def get(self, request):
         """Retrieve the user's cart."""
-        user = request.user
+        user = self.request.user
         cart_items = CartService.get_user_cart(user)
         serializer = CartSerializer(cart_items, many=True)
         return response.Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):
         """Add a product to the cart."""
-        user = request.user
+        user = self.request.user
         product_id = request.data.get('product_id')
         quantity = request.data.get('quantity', 1)
-
         try:
             product = ProductService.get_single_product(product_id)
         except Product.DoesNotExist:
@@ -86,8 +85,7 @@ class CartView(views.APIView):
 
     def delete(self, request, pk):
         """Remove an item from the cart."""
-        user = request.user
-
+        user = self.request.user
         try:
             cart_item = CartService.get_cart(pk, user)
             if cart_item.exists():
@@ -100,9 +98,8 @@ class CartView(views.APIView):
 
     def put(self, request, pk):
         """Update the quantity of a cart item."""
-        user = request.user
+        user = self.request.user
         quantity = request.data.get('quantity')
-
         try:
             cart_item = CartService.get_cart(pk, user)
             if cart_item.exists():

@@ -1,4 +1,4 @@
-// // src/components/Store/CartItem
+// src/components/Store/CartItem.jsx
 import React from 'react';
 import Header from '../Header';
 import Footer from '../Footer';
@@ -7,14 +7,20 @@ import { removeProduct, clearCart, addProduct } from '../../context/cart/cartSli
 import { Container, Button } from 'react-bootstrap';
 import Card from 'react-bootstrap/Card';
 import { useNavigate } from 'react-router-dom';
+import { sendWithAuth } from '../../context/auth/authUtils';
 
 const CartItem = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const cartProducts = useSelector(state => state.cart.products);
 
-    const handleCart = () => {
-        navigate('/cart');
+    const handleCart = async () => {
+        try {
+            await sendWithAuth('store/cart/', navigate, { products: cartProducts });
+            navigate('/cart');
+        } catch (error) {
+            console.error('Error sending cart data:', error);
+        }
     };
 
     return (

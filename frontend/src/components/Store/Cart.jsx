@@ -1,7 +1,7 @@
+// src/components/Cart.jsx
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { sendWithAuth, fetchWithAuth } from '../../context/auth/authUtils';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { addProduct, removeProduct } from '../../context/cart/cartSlice';
 import Header from '../Header';
@@ -41,7 +41,7 @@ const Cart = () => {
             });
         } catch (error) {
             console.error('Error adding product:', error);
-            setError(error)
+            setError(error);
         } finally {
             setLoading(false);
         }
@@ -50,10 +50,8 @@ const Cart = () => {
     const handleRemoveProduct = async (product) => {
         dispatch(removeProduct(product.pk));
         try {
-            await axios.delete(`store/cart/${product.pk}/`, {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem('accessToken')}`
-                }
+            await sendWithAuth(`store/cart/${product.pk}/`, navigate, {
+                method: 'DELETE'
             });
         } catch (error) {
             console.error('Error removing product:', error);
