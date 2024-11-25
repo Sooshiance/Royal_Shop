@@ -68,11 +68,11 @@ const Cart = () => {
         <>
             <Header />
             <h2>Shopping Cart</h2>
-            {cartProducts.length === 0 ? (
+            {cart.length === 0 ? (
                 <p>Your cart is empty.</p>
             ) : (
                 <div>
-                    {cartProducts.map(item => (
+                    {cart.map(item => (
                         <div key={item.pk}>
                             <img src={item.thumbnail} alt={item.product_title} height={250} width={250} />
                             <h3>{item.product_title}</h3>

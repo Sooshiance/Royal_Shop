@@ -16,6 +16,7 @@ const CartItem = () => {
 
     const handleCart = async () => {
         try {
+            console.log(cartProducts);
             await sendWithAuth('store/cart/', navigate, { products: cartProducts });
             navigate('/cart');
         } catch (error) {

@@ -72,14 +72,23 @@ class CartView(views.APIView):
     def post(self, request):
         """Add a product to the cart."""
         user = self.request.user
-        product_id = request.data.get('product_id')
-        quantity = request.data.get('quantity', 1)
+        product_id = request.data.get('products')
+        # print(product_id)
+        y = []
+        for dictionary in product_id:
+            for value in dictionary.values():
+                y.append(value)
+        print(f"quantity === {y[-1]}")
+        q = y[-1]
+        print(f"primary key ==== {y[0]}")
+        pk = y[0]
         try:
-            product = ProductService.get_single_product(product_id)
+            product = ProductService.get_single_product(pk)
+            print(product)
         except Product.DoesNotExist:
             return response.Response({'error': 'Product not found'}, status=status.HTTP_404_NOT_FOUND)
 
-        cart_item = CartService.add_to_cart(user, product, quantity)
+        cart_item = CartService.add_to_cart(user, product, q)
         serializer = CartSerializer(cart_item)
         return response.Response(serializer.data, status=status.HTTP_201_CREATED)
 
