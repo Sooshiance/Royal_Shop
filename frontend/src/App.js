@@ -10,6 +10,7 @@ import Logout from './components/Auth/Logout';
 import Profile from './components/Client/Profile';
 import CartItem from './components/Store/CartItem';
 import Cart from './components/Store/Cart';
+import Register from './components/Auth/Register';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/products/:pk" element={<Product />} />
           <Route path="/cart-item" element={<CartItem />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           <Route path="/logout" element={
             <PrivateRoute>
               <Logout />

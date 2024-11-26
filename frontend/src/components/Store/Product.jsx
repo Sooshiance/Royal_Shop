@@ -5,7 +5,6 @@ import Footer from '../Footer';
 import apiCall from '../../services/apiCall';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-// import { useDispatch } from 'react-redux';
 
 const Product = () => {
 

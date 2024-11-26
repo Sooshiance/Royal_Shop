@@ -15,6 +15,7 @@ class UserService:
     def register_user(username, password):
         user_type = checkUsername(username)
         user = UserRepository.create_user(username=username, password=password)
+        user.set_password(password)
         if user_type == "phone":
             user.is_phone = True
         elif user_type == "email":

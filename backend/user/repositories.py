@@ -4,7 +4,7 @@ from .models import User, OTP, Profile
 class UserRepository:
     @staticmethod
     def create_user(**kwargs):
-        return User.objects.create(**kwargs)
+        return User.objects.create_user(**kwargs)
 
     @staticmethod
     def get_user_by_username(username):

@@ -32,7 +32,10 @@ const Header = () => {
                   <Nav.Link as={Link} to="/cart">Cart</Nav.Link>
                 </>
               ) : (
-                <Nav.Link as={Link} to="/login">Login</Nav.Link>
+                <>
+                  <Nav.Link as={Link} to="/login">Login</Nav.Link>
+                  <Nav.Link as={Link} to="/register">Register</Nav.Link>
+                </>
               )}
             </Nav>
           </Navbar.Collapse>
