@@ -201,7 +201,7 @@ class CouponRepository:
 class UserCouponRepository:
     @staticmethod
     def get_user_coupon_by_user(user:User):
-        return UserCoupon.objects.get(user=user)
+        return UserCoupon.objects.filter(user=user)
     
     @staticmethod
     def update_user_coupon(uc_id, data):

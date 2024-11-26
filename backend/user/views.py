@@ -10,6 +10,9 @@ from .serializers import (RegisterSerializer,
                           ProfileSerializer,)
 from .services import UserService
 
+from store import (repositories as store_repository,
+                   serializers as store_serializer,)
+
 
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
@@ -61,3 +64,21 @@ class ProfileView(generics.RetrieveAPIView):
         except:
             ValidationError("User Not Found!")
         return profile
+
+
+class UserCouponView(generics.RetrieveAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = store_serializer.UserCouponSerializer
+
+    def get_queryset(self):
+        try:
+            user = User.objects.get(username=self.request.user.username)
+        except:
+            raise ValidationError("no user found!")
+        return user
+    
+    def get(self, request):
+        user = self.get_queryset()
+        user_coupon = store_repository.UserCouponRepository.get_user_coupon_by_user(user)
+        srz = store_serializer.UserCouponSerializer(user_coupon, many=True)
+        return Response(srz.data, status=status.HTTP_200_OK)

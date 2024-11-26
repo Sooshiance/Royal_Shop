@@ -183,4 +183,4 @@ class WishListItem(models.Model):
         verbose_name_plural = 'Wish List Items'
 
     def __str__(self):
-        return f"{self.product.product_name} in wishlist of {self.wishlist.user.username}"
+        return f"{self.product.product_title} in wishlist of {self.wishlist.user.username}"

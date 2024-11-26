@@ -8,6 +8,10 @@ from .utils import checkUsername, sendPhoneOTP, sendEmailOTP
 
 class UserService:
     @staticmethod
+    def get_user_by_pk(user:User):
+        return UserRepository.get_user_by_id(user.uid)
+    
+    @staticmethod
     def register_user(username, password):
         user_type = checkUsername(username)
         user = UserRepository.create_user(username=username, password=password)

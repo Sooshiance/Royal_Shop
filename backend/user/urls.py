@@ -5,7 +5,8 @@ from .views import (CustomTokenObtainPairView,
                     ProfileView,
                     VerifyOTPView,
                     PasswordResetRequestView,
-                    PasswordResetView,)
+                    PasswordResetView,
+                    UserCouponView,)
 
 
 app_name = "user"
@@ -17,4 +18,5 @@ urlpatterns = [
     path('verify-otp/', VerifyOTPView.as_view(), name='verify_otp'),
     path('password-reset-request/', PasswordResetRequestView.as_view(), name='password_reset_request'),
     path('password-reset/', PasswordResetView.as_view(), name='password_reset'),
+    path('user-coupon/timeout/', UserCouponView.as_view(), name='user-coupon'),
 ]

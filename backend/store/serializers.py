@@ -92,11 +92,21 @@ class CouponSerializer(serializers.ModelSerializer):
 
 
 class UserCouponSerializer(serializers.ModelSerializer):
-    user = UserSerializer(many=True, read_only=True)
+    # user = serializers.StringRelatedField()
+    user = UserSerializer()
+    coupon = CouponSerializer()
     
     class Meta:
         model = UserCoupon
-        fields = "__all__"
+        fields = [
+            'pk',
+            'user',
+            'coupon',
+            'coupon_code',
+            'is_used',
+            'is_active',
+            'created_at',
+        ]
 
 
 class CartSerializer(serializers.ModelSerializer):

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { fetchWithAuth } from '../../context/auth/authUtils';
 import Header from '../Header';
 import Footer from '../Footer';
+import UserCoupon from './UserCoupon';
 
 const Profile = () => {
 
@@ -36,6 +37,7 @@ const Profile = () => {
                     <p>Loading...</p>
                 )}
             </div>
+            <UserCoupon />
             <Footer />
         </>
     )
