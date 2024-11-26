@@ -33,3 +33,14 @@ class ProductStockThresholdView(APIView):
         result_page = paginator.paginate_queryset(products, request)
         serializer = ProductSerializer(result_page, many=True)
         return Response(serializer.data)
+
+
+class HighestProductRate(APIView):
+    permission_classes = [IsAdminUser]
+
+    def get(self, request):
+        products = ProductQuery.highest_average_rate_products()
+        paginator = MyPagination()
+        result_page = paginator.paginate_queryset(products, request)
+        srz = ProductSerializer(result_page, many=True)
+        return Response(srz.data)
