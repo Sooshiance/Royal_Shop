@@ -5,6 +5,7 @@ import authService from '../../services/authService';
 import { useNavigate } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import '../../styles/login.css';
 
 const Login = () => {
 
@@ -34,7 +35,7 @@ const Login = () => {
   return (
     <>
       <Header />
-      <Form onSubmit={handleLogin}>
+      <Form onSubmit={handleLogin} className='login'>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>Username</Form.Label>
           <Form.Control type="text" placeholder="username" value={username} onChange={(e) => setUsername(e.target.value)} />

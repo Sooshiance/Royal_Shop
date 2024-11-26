@@ -3,7 +3,8 @@ from rest_framework import permissions, generics
 from .services import RateService, CommentService
 from .serializers import RateSerializer, CommentSerializer
 
-from store.repositories import ProductRepository
+from store import repositories, serializers
+from dashboard.queries import ProductQuery
 
 
 class RateListView(generics.ListAPIView):
@@ -11,9 +12,19 @@ class RateListView(generics.ListAPIView):
 
     def get_queryset(self):
         product_id = self.kwargs['product_id']
-        product = ProductRepository.get_product_by_id(product_id)
+        product = repositories.ProductRepository.get_product_by_id(product_id)
         rate = RateService.read_all_rate_of_product(product)
         return rate
+
+
+class HighestProductRateAPIView(generics.ListAPIView):
+    serializer_class = serializers.ProductSerializer
+
+    def get_queryset(self):
+        qrs = ProductQuery.highest_average_rate_products()
+        for i in qrs:
+            print(i.actualPrice)
+        return qrs
 
 
 class RateCreateView(generics.CreateAPIView):
@@ -22,7 +33,7 @@ class RateCreateView(generics.CreateAPIView):
 
     def perform_create(self, serializer):
         product_id = self.kwargs['product_id']
-        product = ProductRepository.get_product_by_id(product_id)
+        product = repositories.ProductRepository.get_product_by_id(product_id)
         serializer.save(user_profile=self.request.user, product=product)
 
 

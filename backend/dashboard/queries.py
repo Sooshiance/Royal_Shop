@@ -1,4 +1,4 @@
-from django.db.models import Q, F, Avg
+from django.db.models import Q, F, Avg, Subquery, OuterRef
 
 from rest_framework.exceptions import ValidationError
 
@@ -28,8 +28,10 @@ class ProductQuery:
     
     @staticmethod
     def highest_average_rate_products():
+        rates = Rate.objects.filter(product=OuterRef('pk')).values('product')
+        average_rating = rates.annotate(avg_vote=Avg('vote')).values('avg_vote')
         return Product.objects.annotate(
-            average_rating=Avg('rate_product__vote')
+        average_rating=Subquery(average_rating)
         ).order_by('-average_rating')
 
 
