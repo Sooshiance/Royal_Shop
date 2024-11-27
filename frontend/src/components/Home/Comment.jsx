@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { sendWithAuth } from '../../context/auth/authUtils';
 import { useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Form } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 
 const Comment = () => {
 
@@ -20,7 +21,7 @@ const Comment = () => {
                 }
             )
 
-            if (response.status_code == 200) {
+            if (response.status_code === 200) {
                 setComment(response);
                 navigate("/");
             }

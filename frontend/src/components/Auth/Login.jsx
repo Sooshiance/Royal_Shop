@@ -32,6 +32,10 @@ const Login = () => {
     }
   };
 
+  const passwordResetPage = () => {
+    navigate("/request-otp");
+  }
+
   return (
     <>
       <Header />
@@ -50,6 +54,9 @@ const Login = () => {
         </Form.Group>
         <Button variant="primary" type="submit">
           Submit
+        </Button>
+        <Button onClick={passwordResetPage} >
+          Forget your password 
         </Button>
       </Form>
       <Footer />

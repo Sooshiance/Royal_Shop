@@ -15,6 +15,9 @@ import Rate from './components/Store/Rate';
 import CreateRate from './components/Store/CreateRate';
 import LatestComment from './components/Home/LatestComment';
 import Comment from './components/Home/Comment';
+import RequestOTP from './components/Auth/RequestOTP';
+import VerifyOTP from './components/Auth/VerifyOTP';
+import PasswordReset from './components/Auth/PasswordReset';
 
 function App() {
   return (
@@ -29,6 +32,9 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/comments" element={<LatestComment />} />
+          <Route path="/request-otp" element={<RequestOTP />} />
+          <Route path="/verify-otp" element={<VerifyOTP />} />
+          <Route path="/password-reset" element={<PasswordReset />} />
           <Route path="/logout" element={
             <PrivateRoute>
               <Logout />
