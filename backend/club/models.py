@@ -13,7 +13,8 @@ class Rate(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='rate_product')
     vote = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
     txt = models.CharField(max_length=255, blank=True, null=True)
-
+    admin_approval = models.BooleanField(default=False)
+    
     def each_product_rate(self):
         return Rate.objects.filter(product=self.product).aggregate(Avg('vote'))['vote__avg']
     
@@ -25,6 +26,7 @@ class Comment(models.Model):
     user_profile = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_comment')
     txt = models.CharField(max_length=255)
     status = models.PositiveSmallIntegerField(choices=CommentType.choices(), default=1)
+    admin_approval = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.user_profile.username}"

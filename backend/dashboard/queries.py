@@ -25,7 +25,19 @@ class ProductQuery:
             return Product.objects.filter(stock_qty__gte=threshold_qty)
         else:
             raise ValidationError(detail="Not an option!")
-    
+
+
+class UserQuery:
+    @staticmethod
+    def user_with_phone():
+        pass
+
+    @staticmethod
+    def user_with_email():
+        pass
+
+
+class RateQuery:
     @staticmethod
     def highest_average_rate_products():
         rates = Rate.objects.filter(product=OuterRef('pk')).values('product')
@@ -33,11 +45,3 @@ class ProductQuery:
         return Product.objects.annotate(
         average_rating=Subquery(average_rating)
         ).order_by('-average_rating')
-
-
-class UserQuery:
-    pass
-
-
-class RateQuery:
-    pass

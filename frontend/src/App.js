@@ -13,6 +13,8 @@ import Cart from './components/Store/Cart';
 import Register from './components/Auth/Register';
 import Rate from './components/Store/Rate';
 import CreateRate from './components/Store/CreateRate';
+import LatestComment from './components/Home/LatestComment';
+import Comment from './components/Home/Comment';
 
 function App() {
   return (
@@ -26,6 +28,7 @@ function App() {
           <Route path="/cart-item" element={<CartItem />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/comments" element={<LatestComment />} />
           <Route path="/logout" element={
             <PrivateRoute>
               <Logout />
@@ -39,6 +42,11 @@ function App() {
           <Route path="/cart" element={
             <PrivateRoute>
               <Cart />
+            </PrivateRoute>
+          } />
+          <Route path="/comments/create" element={
+            <PrivateRoute>
+              <Comment />
             </PrivateRoute>
           } />
           <Route path="/products/:pk/create/rate" element={

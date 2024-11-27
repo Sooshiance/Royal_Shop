@@ -4,7 +4,7 @@ from .services import RateService, CommentService
 from .serializers import RateSerializer, CommentSerializer
 
 from store import repositories, serializers
-from dashboard.queries import ProductQuery
+from dashboard.queries import RateQuery
 
 
 class RateListView(generics.ListAPIView):
@@ -21,7 +21,7 @@ class HighestProductRateAPIView(generics.ListAPIView):
     serializer_class = serializers.ProductSerializer
 
     def get_queryset(self):
-        qrs = ProductQuery.highest_average_rate_products()
+        qrs = RateQuery.highest_average_rate_products()
         return qrs
 
 
@@ -46,17 +46,3 @@ class CommentCreateView(generics.CreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(user_profile=self.request.user)
-
-
-class CommentUpdateView(generics.UpdateAPIView):
-    queryset = CommentService.get_all_comments()
-    serializer_class = CommentSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
-    def perform_update(self, serializer):
-        serializer.save(user_profile=self.request.user)
-
-
-class CommentDeleteView(generics.DestroyAPIView):
-    queryset = CommentService.get_all_comments()
-    permission_classes = [permissions.IsAuthenticated]

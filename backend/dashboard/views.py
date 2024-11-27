@@ -3,7 +3,7 @@ from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
 
-from .queries import ProductQuery
+from .queries import ProductQuery, RateQuery
 
 from store.serializers import ProductSerializer
 
@@ -39,7 +39,7 @@ class HighestProductRate(APIView):
     permission_classes = [IsAdminUser]
 
     def get(self, request):
-        products = ProductQuery.highest_average_rate_products()
+        products = RateQuery.highest_average_rate_products()
         paginator = MyPagination()
         result_page = paginator.paginate_queryset(products, request)
         srz = ProductSerializer(result_page, many=True)
