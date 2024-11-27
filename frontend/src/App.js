@@ -11,6 +11,8 @@ import Profile from './components/Client/Profile';
 import CartItem from './components/Store/CartItem';
 import Cart from './components/Store/Cart';
 import Register from './components/Auth/Register';
+import Rate from './components/Store/Rate';
+import CreateRate from './components/Store/CreateRate';
 
 function App() {
   return (
@@ -20,6 +22,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/products" element={<Products />} />
           <Route path="/products/:pk" element={<Product />} />
+          <Route path="/products/:pk/rate" element={<Rate />} />
           <Route path="/cart-item" element={<CartItem />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
@@ -36,6 +39,11 @@ function App() {
           <Route path="/cart" element={
             <PrivateRoute>
               <Cart />
+            </PrivateRoute>
+          } />
+          <Route path="/products/:pk/create/rate" element={
+            <PrivateRoute>
+              <CreateRate />
             </PrivateRoute>
           } />
           <Route path='*' element={<NoPage />} />

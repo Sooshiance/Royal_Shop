@@ -22,8 +22,6 @@ class HighestProductRateAPIView(generics.ListAPIView):
 
     def get_queryset(self):
         qrs = ProductQuery.highest_average_rate_products()
-        for i in qrs:
-            print(i.actualPrice)
         return qrs
 
 

@@ -5,10 +5,12 @@ import Footer from '../Footer';
 import apiCall from '../../services/apiCall';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
+import { useNavigate } from 'react-router-dom';
 
 const Product = () => {
 
   const [product, setProduct] = useState({});
+  const navigate = useNavigate();
   const { pk } = useParams();
 
   const [loading, setLoading] = useState(true);
@@ -31,7 +33,15 @@ const Product = () => {
 
     fetchProduct();
 
-  }, [])
+  }, [pk])
+
+  const handleRate = () => {
+    navigate(`/products/${pk}/rate`);
+  }
+
+  const givingRate = () => {
+    navigate(`/products/${pk}/create/rate`);
+  }
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error fetching products: {error.message}</div>;
@@ -50,6 +60,14 @@ const Product = () => {
           <Button variant="primary">Add to  Cart</Button>
           <Card.Img height={250} width={250} variant="top" src={product.thumbnail} />
         </Card.Body>
+        <Card.Text>
+          <Button onClick={handleRate}>
+            See Vote about this product
+          </Button>
+          <Button onClick={givingRate}>
+            Give Vote about this product
+          </Button>
+        </Card.Text>
         <Card.Footer className="text-muted">
           <small className="text-muted col-6">
             {product.price}
