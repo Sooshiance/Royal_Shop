@@ -26,6 +26,7 @@ class UserService:
     @staticmethod
     def send_otp(user:User):
         otp = str(uuid.uuid4().int)[:6]
+        print(f"OTP ==== {otp}")
         OTPRepository.create_otp(user, otp)
         if user.is_phone:
             sendPhoneOTP(user)
@@ -35,7 +36,7 @@ class UserService:
     @staticmethod
     def verify_otp(user, otp):
         otp_record = OTPRepository.get_otp(user, otp)
-        return otp_record is not None
+        return otp_record 
 
     @staticmethod
     def create_password_reset_otp(user:User):

@@ -163,7 +163,8 @@ class OrderItem(models.Model):
 
 
 class WishList(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, blank=True, null=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='wishlist_user',
+                                blank=True, null=True)
 
     class Meta:
         verbose_name = 'Wish List'
@@ -176,6 +177,8 @@ class WishList(models.Model):
 class WishListItem(models.Model):
     wishlist = models.ForeignKey(WishList, on_delete=models.CASCADE, related_name='items')
     product  = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_list',
+                                 blank=True, null=True)
+    user     = models.ForeignKey(User, on_delete=models.CASCADE, related_name='wishlist_item_user',
                                  blank=True, null=True)
 
     class Meta:

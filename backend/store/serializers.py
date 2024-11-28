@@ -58,7 +58,6 @@ class AllProductSerializer(serializers.ModelSerializer):
 
 
 class ProductSerializer(serializers.ModelSerializer):
-    
     category = CategorySerializer(read_only=True)
     brand = BrandSerializer(read_only=True)
     gallery = GallerySerializer(many=True, read_only=True)
@@ -92,7 +91,6 @@ class CouponSerializer(serializers.ModelSerializer):
 
 
 class UserCouponSerializer(serializers.ModelSerializer):
-    # user = serializers.StringRelatedField()
     user = UserSerializer()
     coupon = CouponSerializer()
     
@@ -118,22 +116,22 @@ class CartSerializer(serializers.ModelSerializer):
 
 
 class OrderSerializer(serializers.ModelSerializer):
-
-    user = UserSerializer(many=True, read_only=True)
+    user = UserSerializer()
 
     class Meta:
         model = Order
-        fields = "__all__"
+        fields = ['pk', 'user', 'cart', 'total_price', 'status']
 
 
 class OrderItemSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
+
     class Meta:
         model = OrderItem
-        fields = ['order', 'final_price']
+        fields = ['order', 'final_price', 'user', 'pk']
 
 
 class WishListSerializer(serializers.ModelSerializer):
-
     user = UserSerializer(many=True, read_only=True)
 
     class Meta:
