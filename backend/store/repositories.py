@@ -217,6 +217,7 @@ class UserCouponRepository:
     @staticmethod
     def check_user_coupon(user:User, code:int):
         try:
+            # TODO: First Software engineer principle(each function must have one responsibility)
             uc:UserCoupon = UserCoupon.objects.filter(user=user, coupon_code=code)
             if uc.coupon_code != code or uc.is_used==True or uc.is_active==False:
                 raise ValidationError("No valid coupon")
@@ -227,6 +228,7 @@ class UserCouponRepository:
     @staticmethod
     def get_user_coupon_checkout(user:User, code:int):
         try:
+            # TODO: First Software engineer principle(each function must have one responsibility)
             x = __class__.check_user_coupon(user, code)
             c:Decimal = x.objects.select_related('coupon').only('checkout')
             return c
@@ -248,7 +250,6 @@ class CartRepository:
 
     @staticmethod
     def get_cart(pk:int ,user:User):
-        # Cart.objects 
         return Cart.objects.filter(pk, user=user)
 
     @staticmethod
@@ -284,7 +285,6 @@ class OrderRepository:
 
     @staticmethod
     def get_orders_by_user(user:User):
-        # user might have multiple `Order`
         return Order.objects.filter(user=user)
 
     @staticmethod

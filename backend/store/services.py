@@ -1,6 +1,9 @@
 # services.py
 from django.db import transaction
 
+from rest_framework.exceptions import ValidationError
+
+from .models import Cart, Order
 from .repositories import (CategoryRepository,
                            BrandRepository,
                            ProductRepository,
@@ -117,6 +120,10 @@ class UserCouponService:
     @staticmethod
     def delete_coupon(uc_id):
         return UserCouponRepository.delete_user_coupon(uc_id)
+    
+    @staticmethod
+    def check_user_coupon(user, code):
+        return UserCouponRepository.get_user_coupon_checkout(user, code)
 
 
 class CartService:
@@ -144,16 +151,35 @@ class CartService:
 class OrderService:
     @staticmethod
     @transaction.atomic
-    def place_order(user, cart):
-        order = OrderRepository.create_order(user, cart)
-        # Create order items based on the cart items.
+    def place_order(user, cart:Cart, coupon_code=None):
+        if not cart.products_price:
+            raise ValidationError("Cart cannot be empty")
+
+        # Calculate total price
+        total_price = cart.products_price
+
+        # Apply coupon if provided
+        if coupon_code:
+            try:
+                user_coupon = UserCouponRepository.check_user_coupon(user, coupon_code)
+                discount = (user_coupon.coupon.checkout / 100) * total_price
+                total_price -= discount
+                user_coupon.is_used = True
+                user_coupon.save()
+            except ValidationError as e:
+                raise e
+
+        order = Order.objects.create(user=user, cart=cart, total_price=total_price)
+
+        # Create order items based on the cart items
         cart_items = CartRepository.get_cart_by_user(user)
+
         for item in cart_items:
             OrderItemRepository.create_order_item(order=order, user=user, final_price=item.products_price)
-        
-        # Optionally clear the cart after placing the order.
-        for item in cart_items:
-            CartRepository.remove_from_cart(item)
+
+        # TODO: Optionally clear the cart after placing the order
+        # for item in cart_items:
+        #     CartRepository.remove_from_cart(item)
 
         return order
 

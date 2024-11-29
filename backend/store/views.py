@@ -5,7 +5,8 @@ from rest_framework import (permissions,
                             generics)
 
 from .models import (Product,
-                     Cart)
+                     Cart,
+                     Order,)
 from .serializers import (CategorySerializer,
                           BrandSerializer,
                           ProductSerializer,
@@ -14,6 +15,11 @@ from .serializers import (CategorySerializer,
                           CartSerializer,
                           OrderSerializer,
                           OrderItemSerializer,)
+from .repositories import (
+    CartRepository,
+    OrderRepository,
+    OrderItemRepository,
+)
 from .services import (CategoryService,
                        BrandService,
                        ProductService,
@@ -64,39 +70,29 @@ class CartView(views.APIView):
 
     def get(self, request):
         """Retrieve the user's cart."""
-        user = self.request.user
-        cart_items = CartService.get_user_cart(user)
+        cart_items = CartService.get_user_cart(self.request.user)
         serializer = CartSerializer(cart_items, many=True)
         return response.Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):
-        """Add a product to the cart."""
-        user = self.request.user
-        product_id = request.data.get('products')
-        # print(product_id)
-        y = []
-        for dictionary in product_id:
-            for value in dictionary.values():
-                y.append(value)
-        print(f"quantity === {y[-1]}")
-        q = y[-1]
-        print(f"primary key ==== {y[0]}")
-        pk = y[0]
-        try:
-            product = ProductService.get_single_product(pk)
-            print(product)
-        except Product.DoesNotExist:
-            return response.Response({'error': 'Product not found'}, status=status.HTTP_404_NOT_FOUND)
+        """Add multiple products to the cart."""
+        products_data = request.data.get('products')
+        product_ids = list(map(lambda x: x['pk'], products_data))
+        quantities = list(map(lambda x: x['quantity'], products_data))
 
-        cart_item = CartService.add_to_cart(user, product, q)
-        serializer = CartSerializer(cart_item)
+        try:
+            products = list(map(ProductService.get_single_product, product_ids))
+        except Product.DoesNotExist:
+            return response.Response({'error': 'One or more products not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        cart_items = list(map(lambda p, q: CartService.add_to_cart(self.request.user, p, q), products, quantities))
+        serializer = CartSerializer(cart_items, many=True)
         return response.Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def delete(self, request, pk):
         """Remove an item from the cart."""
-        user = self.request.user
         try:
-            cart_item = CartService.get_cart(pk, user)
+            cart_item = CartService.get_cart(pk, self.request.user)
             if cart_item.exists():
                 CartService.remove_from_cart(cart_item.first())
                 return response.Response(status=status.HTTP_204_NO_CONTENT)
@@ -107,10 +103,9 @@ class CartView(views.APIView):
 
     def put(self, request, pk):
         """Update the quantity of a cart item."""
-        user = self.request.user
         quantity = request.data.get('quantity')
         try:
-            cart_item = CartService.get_cart(pk, user)
+            cart_item = CartService.get_cart(pk, self.request.user)
             if cart_item.exists():
                 updated_cart_item = CartService.update_cart_item(cart_item.first(), quantity)
                 serializer = CartSerializer(updated_cart_item)
@@ -119,3 +114,40 @@ class CartView(views.APIView):
                 return response.Response({'error': 'Cart item not found'}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return response.Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+class OrderListView(views.APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        orders = OrderService.get_user_orders(self.request.user)
+        serializer = OrderSerializer(orders, many=True)
+        return response.Response(serializer.data)
+
+class OrderDetailView(views.APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, order_id):
+        order = OrderService.get_order_details(order_id)
+        serializer = OrderSerializer(order)
+        return response.Response(serializer.data)
+
+class CreateOrderView(views.APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request):
+        cart_id = request.data.get('cart_id')
+        coupon_code = request.data.get('coupon_code', None)
+        cart = CartRepository.get_cart(cart_id, self.request.user)
+        order = OrderService.place_order(self.request.user, cart, coupon_code)
+        serializer = OrderSerializer(order)
+        return response.Response(serializer.data, status=status.HTTP_201_CREATED)
+
+class OrderItemListView(views.APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, order_id):
+        order = OrderRepository.get_order_by_id(order_id)
+        create_order = OrderItemRepository.create_order_item(order, self.request.user, order.total_price)
+        order_items = OrderItemRepository.get_order_items_by_order(order)
+        serializer = OrderItemSerializer(order_items, many=True)
+        return response.Response(serializer.data)
