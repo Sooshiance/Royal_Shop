@@ -115,6 +115,7 @@ class CartView(views.APIView):
         except Exception as e:
             return response.Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
+
 class OrderListView(views.APIView):
     permission_classes = [permissions.IsAuthenticated]
 
@@ -123,6 +124,7 @@ class OrderListView(views.APIView):
         serializer = OrderSerializer(orders, many=True)
         return response.Response(serializer.data)
 
+
 class OrderDetailView(views.APIView):
     permission_classes = [permissions.IsAuthenticated]
 
@@ -130,6 +132,7 @@ class OrderDetailView(views.APIView):
         order = OrderService.get_order_details(order_id)
         serializer = OrderSerializer(order)
         return response.Response(serializer.data)
+
 
 class CreateOrderView(views.APIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -141,6 +144,7 @@ class CreateOrderView(views.APIView):
         order = OrderService.place_order(self.request.user, cart, coupon_code)
         serializer = OrderSerializer(order)
         return response.Response(serializer.data, status=status.HTTP_201_CREATED)
+
 
 class OrderItemListView(views.APIView):
     permission_classes = [permissions.IsAuthenticated]

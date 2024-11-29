@@ -78,6 +78,92 @@ Here is the core functionalities of our ECommerce with ER:
 
 of course this is not the whole Data Base of our api but, It contains the main idea of our ECommerce.
 
+### user app
+
+- **`Authentication`**: In `user` app, I'v customized the the default `User` model of Django. I'v consider `username` as a
+TextField` and so users can send both `email` & `phone`. After users registration, `is_email` get `True` or `is_phone`. Later on we
+will use it in `OTP` and since **`OTP**` can be use by his/her owner and yes its an additional layer of security.
+
+- **`OTP`**: In `user` app, I'v added this scenario with security consideration that users need their `otp token` in two places
+first in `verify` scenario and than in `password reset`. I'v added this in `password reset` because, If someone grant your
+credentials, your whole data is at risk!
+
+### store app
+
+This app has lot of features. I will explain them one by one:
+
+- **`Product`**: I'v added a field named `actualPrice`, its a `GeneratedField` so I use `F`(expression wrapper) to update its value
+and this is the first defense against **`Race Condition`** attack.
+
+- **`Gallery & Feature`**: I just make `Gallery` & `Feature` inline with `Product` model to let admin show more about his/her
+products
+
+- **`Coupon`**: I'v added this model to let `Admin` create his/her own **`Coupon Type`**, also I'v added a field named 
+**`expiration`** field so admin can change it as his/her requirements. The `expiration` field is a **`DurationField`** and will use
+to know if users's coupon has been expired or not.
+
+- **`UserCoupon`**: You can integrate your **`History`** model with that model to dispatch `coupon` for your clients as a presents
+of buying.
+
+- **`Cart`**: This model has two fields for storing prices and exactly, I'v placed `products_price` field to calculate the product's
+price in the backend with another **`GeneratedField`**. And that is the second defense against `Race Condition`. Also the most
+important things about its `CartView` is that instead of using `for loop`, I'v used `map` and `lambda` functions, because, as you
+know these are built-in functions of python & in the iterpertering time will not be parse by interpreter(These functions wrritten 
+in C language itself) so I use them instead of `for loop` and `yield` keyword.
+
+- **`Order`**: This model will keep `progress tracking` also as you know I'v implemented the `service-repository` design pattern 
+and we are going to let users use their `coupons`, right? Now, I'v used service to check user's coupon and consume it to give 
+him/her a checkout. Also in its service, I let users to send their `coupon code` to calculate `total_price`. And the last and 
+important thing is I used `transaction.atomic` decorator as the third layer of defense against `Race Condition` attack.
+
+- **`OrderItem`**: In the last step, we will add all pieces together, therefor we will redirect user to `payment` gateway.
+
+- **`WishList`**: This model will let users to store their favorite products and buy it later on.
+
+### club app
+
+In this app we will let users send their opinion about anything! Here we have two models:
+
+- **`Rate`**: This model has a field named `vote` to keep grades about a product and also `each_product_rate` function to calculate
+the average of votes of each product individually.
+
+- **`Comment`**: This model will let users send their `suggestion` or `criticism` so you can classify and maintain your app better.
+
+### dashboard app
+
+This app does not contain any models but, I'v added a `queries` module and put some good queries in it
+
+- **`ProductQuery`**: This class have two queries, one for looking for out of stock products, the other for calculate that how many
+product is left in stock.
+
+- **`RateQuery`**: This class has one query for now. Let me explain it(it's a little bit tricky):
+Unlike what we did in the `Rate` model itself, here we don't have the model as ready to manage, so first we need to use `OuterRef` 
+to reach the `product` in the `Product` model(we created a subquery). Than, we create its annotation and calculate the average vote
+of each pk from last subquery; in the end, again we use `annotate` to add this `subquery` to the products. (Optionally you can give
+them order to better indexing...)
+
+### payment app
+
+I will only add models not views and other staff to it.(because, some may want to write their own logic for payment)
+
+- **`RoyalTransactions`**: We have these fields : two foreign keys, one for `User` and the other for `OrderItem`, `authorized_key` 
+to keep payment gateway code, `price` that user want to pay for his products, `card_hash` to keep hash of cards, `tax` tax amount of
+gateway, `transaction_id` for Transaction ID.
+
+- **`History`**: After user do his/her transactions in payment gateway, whatever result is, we will store it in the `History` model
+And we will need to do some important operations if payment is successful like: change the `progress-tracking` to `Paid` also
+update your stock with the quantity of `Cart` models(decrease the `stock_qty` field of each single product object from `quantity`).
+
+### Why you use @staticmethod decorator everywhere?
+
+Let me explain by a very simple calculation:
+
+As you may an expert in Python, you should be familiar with `getsizeof` function. This function will calculate how many bytes taken
+by your objects(Object class, Functions, Lists & etc.). So Imagine that I was use normal class object(self keyword) for our design 
+pattern and queries, You will reserve at least 3 objects at a time and each object will use 56 bytes from memory `56*3==168bytes`  
+for every request, WOOOW what waste of memory. If you have a plan for a large scale applications, you really need to consider these 
+little but important things.
+
 ## Frontend
 
 ## Contributing
