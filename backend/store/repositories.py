@@ -254,15 +254,19 @@ class CartRepository:
 
     @staticmethod
     def add_to_cart(user:User, product:Product, quantity:int):
-        cart_item, created = Cart.objects.get_or_create(
-            user=user,
-            product=product,
-            defaults={'quantity': quantity, 'realPrice': product.actualPrice}
-        )
-        if not created:
-            cart_item.quantity += quantity
-            cart_item.save()
-        return cart_item
+        try:
+            if product.stock_qty >= quantity:
+                cart_item, created = Cart.objects.get_or_create(
+                user=user,
+                product=product,
+                defaults={'quantity': quantity, 'realPrice': product.actualPrice}
+                )
+                if not created:
+                    cart_item.quantity += quantity
+                    cart_item.save()
+                return cart_item
+        except:
+            raise ValidationError("You can not buy more than stock quantity")
 
     @staticmethod
     def remove_from_cart(cart_item:Cart):
