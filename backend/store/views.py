@@ -4,14 +4,11 @@ from rest_framework import (permissions,
                             response,
                             generics)
 
-from .models import (Product,
-                     Cart,
-                     Order,)
+from .models import Product
 from .serializers import (CategorySerializer,
                           BrandSerializer,
                           ProductSerializer,
                           AllProductSerializer,
-                          UserCouponSerializer,
                           CartSerializer,
                           OrderSerializer,
                           OrderItemSerializer,)
@@ -23,10 +20,9 @@ from .repositories import (
 from .services import (CategoryService,
                        BrandService,
                        ProductService,
-                       UserCouponService,
                        CartService,
-                       OrderService,
-                       OrderItemService,)
+                       OrderService,)
+from .utils import check_coupon_expiration
 
 
 class AllCategoryGenericView(generics.ListAPIView):
@@ -72,6 +68,7 @@ class CartView(views.APIView):
         """Retrieve the user's cart."""
         cart_items = CartService.get_user_cart(self.request.user)
         serializer = CartSerializer(cart_items, many=True)
+        check_coupon_expiration(self.request.user)
         return response.Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):

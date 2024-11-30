@@ -6,7 +6,11 @@ from .views import (AllCategoryGenericView,
                     BrandAPIView,
                     ProductsGenericAPIView,
                     ProductAPIView,
-                    CartView,)
+                    CartView,
+                    OrderListView,
+                    OrderDetailView,
+                    CreateOrderView,
+                    OrderItemListView)
 
 
 app_name = "store"
@@ -22,4 +26,8 @@ urlpatterns = [
     # TODO: Cart scenarios
     path('cart/', CartView.as_view(), name='cart'),
     path('cart/<int:pk>/', CartView.as_view(), name='cart-item'),
+    path("order/", OrderListView.as_view(), name='order-list'),
+    path("order/<int:order_id>/", OrderDetailView.as_view(), name='order-detail'),
+    path("create/order/", CreateOrderView.as_view(), name='create-order'),
+    path("order-item/list/", OrderItemListView.as_view(), name='order-item'),
 ]
