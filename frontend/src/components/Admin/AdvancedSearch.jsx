@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { fetchWithAuth } from '../../context/auth/authUtils';
 
-const User = () => {
-  return (
-      <>
-      
-      </>
-  )
+const AdvancedSearch = () => {
+    return (
+        <>
+
+        </>
+    )
 }
 
-export default User
+export default AdvancedSearch

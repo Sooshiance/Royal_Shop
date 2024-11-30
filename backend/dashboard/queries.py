@@ -20,9 +20,9 @@ class ProductQuery:
     @staticmethod
     def stock_qty_product(threshold_qty, status):
         if status == "lower":
-            return Product.objects.filter(stock_qty__lt=threshold_qty)
+            return Product.objects.filter(stock_qty__lt=int(threshold_qty))
         if status == "higher":
-            return Product.objects.filter(stock_qty__gte=threshold_qty)
+            return Product.objects.filter(stock_qty__gte=int(threshold_qty))
         else:
             raise ValidationError(detail="Not an option!")
 

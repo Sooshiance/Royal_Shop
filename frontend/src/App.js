@@ -18,6 +18,8 @@ import Comment from './components/Home/Comment';
 import RequestOTP from './components/Auth/RequestOTP';
 import VerifyOTP from './components/Auth/VerifyOTP';
 import PasswordReset from './components/Auth/PasswordReset';
+import AdminWrapper from './components/Admin/AdminWrapper';
+import AllConfig from './components/Admin/Config/AllConfig';
 
 function App() {
   return (
@@ -58,6 +60,16 @@ function App() {
           <Route path="/products/:pk/create/rate" element={
             <PrivateRoute>
               <CreateRate />
+            </PrivateRoute>
+          } />
+          <Route path="nonsense/admin/access-granted/statistics" element={
+            <PrivateRoute>
+              <AdminWrapper />
+            </PrivateRoute>
+          } />
+          <Route path="nonsense/admin/access-granted/config" element={
+            <PrivateRoute>
+              <AllConfig />
             </PrivateRoute>
           } />
           <Route path='*' element={<NoPage />} />
