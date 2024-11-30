@@ -81,7 +81,7 @@ of course this is not the whole Data Base of our api but, It contains the main i
 ### user app
 
 - **`Authentication`**: In `user` app, I'v customized the the default `User` model of Django. I'v consider `username` as a
-TextField` and so users can send both `email` & `phone`. After users registration, `is_email` get `True` or `is_phone`. Later on we
+`TextField` and so users can send both `email` & `phone`. After users registration, `is_email` get `True` or `is_phone`. Later on we
 will use it in `OTP` and since **`OTP**` can be use by his/her owner and yes its an additional layer of security.
 
 - **`OTP`**: In `user` app, I'v added this scenario with security consideration that users need their `otp token` in two places
@@ -108,7 +108,7 @@ of buying. I'v added a scenario that check `UserCoupon` expirations and if a cou
 - **`Cart`**: This model has two fields for storing prices and exactly, I'v placed `products_price` field to calculate the product's
 price in the backend with another **`GeneratedField`**. And that is the second defense against `Race Condition`. Also the most
 important things about its `CartView` is that instead of using `for loop`, I'v used `map` and `lambda` functions, because, as you
-know these are built-in functions of python & in the iterpertering time will not be parse by interpreter(These functions wrritten 
+know these are built-in functions of python & in the iterpertering time will not be parse by interpreter(These functions written 
 in C language itself) so I use them instead of `for loop` and `yield` keyword.
 
 - **`Order`**: This model will keep `progress tracking` also as you know I'v implemented the `service-repository` design pattern 
