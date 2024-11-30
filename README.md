@@ -103,7 +103,7 @@ products
 to know if users's coupon has been expired or not.
 
 - **`UserCoupon`**: You can integrate your **`History`** model with that model to dispatch `coupon` for your clients as a presents
-of buying.
+of buying. I'v added a scenario that check `UserCoupon` expirations and if a coupon was reached to its tres hold, will gets deleted
 
 - **`Cart`**: This model has two fields for storing prices and exactly, I'v placed `products_price` field to calculate the product's
 price in the backend with another **`GeneratedField`**. And that is the second defense against `Race Condition`. Also the most
