@@ -161,8 +161,7 @@ Let me explain by a very simple calculation:
 As you may an expert in Python, you should be familiar with `getsizeof` function. This function will calculate how many bytes taken
 by your objects(Object class, Functions, Lists & etc.). So Imagine that I was use normal class object(self keyword) for our design 
 pattern and queries, You will reserve at least 3 objects at a time and each object will use 56 bytes from memory `56*3==168bytes`  
-for every request, WOOOW what waste of memory. If you have a plan for a large scale applications, you really need to consider these 
-little but important things.
+for every request, WOOOW what waste of memory. Take care of this.
 
 ## Frontend
 
