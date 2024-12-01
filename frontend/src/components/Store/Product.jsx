@@ -57,7 +57,6 @@ const Product = () => {
           <Card.Text>
             {product.description}
           </Card.Text>
-          <Button variant="primary">Add to  Cart</Button>
           <Card.Img height={250} width={250} variant="top" src={product.thumbnail} />
         </Card.Body>
         <Card.Text>

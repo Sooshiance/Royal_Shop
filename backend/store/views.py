@@ -65,14 +65,12 @@ class CartView(views.APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
-        """Retrieve the user's cart."""
         cart_items = CartRepository.get_cart_by_user(self.request.user)
         serializer = CartSerializer(cart_items, many=True)
         check_coupon_expiration(self.request.user)
         return response.Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):
-        """Add multiple products to the cart."""
         products_data = self.request.data.get('products')
         if not products_data:
             return response.Response({'error': 'No products provided'}, status=status.HTTP_400_BAD_REQUEST)
@@ -90,8 +88,7 @@ class CartView(views.APIView):
         return response.Response(serializer.data, status=status.HTTP_200_OK)
 
     def put(self, request, pk):
-        """Update the quantity of a cart item."""
-        quantity = self.request.query_params.get("quantity", None)
+        quantity = request.data.get('quantity')
         try:
             quantity = int(quantity)
             cart_item = CartRepository.get_cart(pk)
@@ -105,7 +102,6 @@ class CartView(views.APIView):
             return response.Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):
-        """Remove an item from the cart."""
         cart_item = CartRepository.get_cart(pk)
         try:
             if cart_item:

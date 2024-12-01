@@ -279,7 +279,7 @@ class CartRepository:
     def update_cart_item(cart_item:Cart, quantity:int):
         try:
             if cart_item.product.stock_qty >= quantity:
-                cart_item.quantity = quantity
+                cart_item.quantity += quantity
                 cart_item.save()
                 return cart_item
         except:

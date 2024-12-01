@@ -17,8 +17,12 @@ const CartItem = () => {
     const handleCart = async () => {
         try {
             console.log(cartProducts);
-            await sendWithAuth('store/cart/create/', navigate, { products: cartProducts });
-            navigate('/cart');
+            const response = await sendWithAuth('store/cart/', navigate, { products: cartProducts });
+            if (response.status === 200) {
+                navigate('/cart');
+            } else {
+                navigate('/cart-item');
+            }
         } catch (error) {
             console.error('Error sending cart data:', error);
         }
