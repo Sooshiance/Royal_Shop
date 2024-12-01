@@ -66,14 +66,17 @@ class CartView(views.APIView):
 
     def get(self, request):
         """Retrieve the user's cart."""
-        cart_items = CartService.get_user_cart(self.request.user)
+        cart_items = CartRepository.get_cart_by_user(self.request.user)
         serializer = CartSerializer(cart_items, many=True)
         check_coupon_expiration(self.request.user)
         return response.Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):
         """Add multiple products to the cart."""
-        products_data = request.data.get('products')
+        products_data = self.request.data.get('products')
+        if not products_data:
+            return response.Response({'error': 'No products provided'}, status=status.HTTP_400_BAD_REQUEST)
+
         product_ids = list(map(lambda x: x['pk'], products_data))
         quantities = list(map(lambda x: x['quantity'], products_data))
 
@@ -84,29 +87,30 @@ class CartView(views.APIView):
 
         cart_items = list(map(lambda p, q: CartService.add_to_cart(self.request.user, p, q), products, quantities))
         serializer = CartSerializer(cart_items, many=True)
-        return response.Response(serializer.data, status=status.HTTP_201_CREATED)
-
-    def delete(self, request, pk):
-        """Remove an item from the cart."""
-        try:
-            cart_item = CartService.get_cart(pk, self.request.user)
-            if cart_item.exists():
-                CartService.remove_from_cart(cart_item.first())
-                return response.Response(status=status.HTTP_204_NO_CONTENT)
-            else:
-                return response.Response({'error': 'Cart item not found'}, status=status.HTTP_404_NOT_FOUND)
-        except Exception as e:
-            return response.Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        return response.Response(serializer.data, status=status.HTTP_200_OK)
 
     def put(self, request, pk):
         """Update the quantity of a cart item."""
-        quantity = request.data.get('quantity')
+        quantity = self.request.query_params.get("quantity", None)
         try:
-            cart_item = CartService.get_cart(pk, self.request.user)
-            if cart_item.exists():
-                updated_cart_item = CartService.update_cart_item(cart_item.first(), quantity)
+            quantity = int(quantity)
+            cart_item = CartRepository.get_cart(pk)
+            if cart_item:
+                updated_cart_item = CartRepository.update_cart_item(cart_item, quantity)
                 serializer = CartSerializer(updated_cart_item)
                 return response.Response(serializer.data, status=status.HTTP_200_OK)
+            else:
+                return response.Response({'error': cart_item}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return response.Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk):
+        """Remove an item from the cart."""
+        cart_item = CartRepository.get_cart(pk)
+        try:
+            if cart_item:
+                CartService.remove_from_cart(cart_item)
+                return response.Response(status=status.HTTP_204_NO_CONTENT)
             else:
                 return response.Response({'error': 'Cart item not found'}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:

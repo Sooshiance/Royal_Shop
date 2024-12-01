@@ -7,13 +7,16 @@ from user.models import User
 
 def check_coupon_expiration(user_coupons:User):
     # Fetch user coupons with related Coupon data
-    user_coupon_queryset = UserCoupon.objects.select_related('coupon').filter(user__in=user_coupons)
+    user_coupon_queryset = UserCoupon.objects.select_related('coupon').filter(user=user_coupons)
 
     for user_coupon in user_coupon_queryset:
         
         # Calculate the time difference between now and created_at
         time_elapsed = timezone.now() - user_coupon.created_at
+
+        print(f"expiration time ==== {type(user_coupon.coupon.expiration.total_seconds())}")
+        print(f"time elapsed ======= {type(time_elapsed.total_seconds())}")
         
         # Check if the coupon has expired based on `seconds` cause of `DurationField`
-        if time_elapsed.seconds > user_coupon.coupon.expiration:
+        if time_elapsed.total_seconds() > user_coupon.coupon.expiration.total_seconds():
             user_coupon.delete()

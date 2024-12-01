@@ -249,8 +249,11 @@ class CartRepository:
         return Cart.objects.filter(user=user)
 
     @staticmethod
-    def get_cart(pk:int ,user:User):
-        return Cart.objects.filter(pk, user=user)
+    def get_cart(pk:int):
+        try:
+            return Cart.objects.get(pk=pk)
+        except Exception as e:
+            raise ValidationError(detail=str(e))
 
     @staticmethod
     def add_to_cart(user:User, product:Product, quantity:int):
@@ -274,9 +277,13 @@ class CartRepository:
 
     @staticmethod
     def update_cart_item(cart_item:Cart, quantity:int):
-        cart_item.quantity = quantity
-        cart_item.save()
-        return cart_item
+        try:
+            if cart_item.product.stock_qty >= quantity:
+                cart_item.quantity = quantity
+                cart_item.save()
+                return cart_item
+        except:
+            raise ValidationError("You can not buy more than stock quantity")
 
 
 class OrderRepository:

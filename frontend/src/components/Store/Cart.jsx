@@ -1,11 +1,12 @@
 // src/components/Cart.jsx
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { sendWithAuth, fetchWithAuth } from '../../context/auth/authUtils';
+import { fetchWithAuth, deleteWithAuth, putWithAuth } from '../../context/auth/authUtils';
 import { useNavigate } from 'react-router-dom';
 import { addProduct, removeProduct } from '../../context/cart/cartSlice';
 import Header from '../Header';
 import Footer from '../Footer';
+import apiCall from '../../services/apiCall';
 
 const Cart = () => {
 
@@ -19,7 +20,7 @@ const Cart = () => {
     useEffect(() => {
         const fetchCart = async () => {
             try {
-                const data = await fetchWithAuth('store/cart/', navigate);
+                const data = await fetchWithAuth('store/cart/create/', navigate);
                 setCart(data);
             } catch (error) {
                 console.error('Error fetching cart data:', error);
@@ -35,9 +36,13 @@ const Cart = () => {
     const handleAddProduct = async (product) => {
         dispatch(addProduct(product));
         try {
-            await sendWithAuth('store/cart/', navigate, {
-                product_id: product.pk,
-                quantity: 1
+            const token = localStorage.getItem('accessToken');
+            if (!token) {
+                navigate('/login');
+                return null;
+            }
+            await apiCall.delete(`store/edit/cart/${product.pk}/`, navigate, {
+                headers: { Authorization: `Bearer ${token}`, }
             });
         } catch (error) {
             console.error('Error adding product:', error);
@@ -50,9 +55,8 @@ const Cart = () => {
     const handleRemoveProduct = async (product) => {
         dispatch(removeProduct(product.pk));
         try {
-            await sendWithAuth(`store/cart/${product.pk}/`, navigate, {
-                method: 'DELETE'
-            });
+            const response = await deleteWithAuth(`store/edit/cart/${product.pk}/`, navigate);
+            console.log(response.data);
         } catch (error) {
             console.error('Error removing product:', error);
             setError(error);
