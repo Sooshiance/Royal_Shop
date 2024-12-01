@@ -211,7 +211,7 @@ This component will let users know deadline of their `coupons`. This component u
 will take the `created_at` field of `UserCoupon` model and create an object from `Date`, get the time of it, `subtract` it from 
 the `created_at` and transform the result into a digital clock like object for user.
 
-# Admin 
+### Admin 
 
 These components are classified into two parts:
 
