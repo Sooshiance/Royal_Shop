@@ -160,10 +160,68 @@ Let me explain by a very simple calculation:
 
 As you may an expert in Python, you should be familiar with `getsizeof` function. This function will calculate how many bytes taken
 by your objects(Object class, Functions, Lists & etc.). So Imagine that I was use normal class object(self keyword) for our design 
-pattern and queries, You will reserve at least 3 objects at a time and each object will use 56 bytes from memory `56*3==168bytes`  
-for every request, WOOOW what waste of memory. Take care of this.
+pattern and queries, You will reserve at least 3 objects at a time and each object will use 56 bytes from memory `56*3==168bytes` for every request, WOOOW what waste of memory!!!
 
 ## Frontend
+
+For Now, I just use `redux` for state management, `axios` for api call & `bootstrap` to style my components.
+
+I will add **`react-query`** package to update backend & frontend simultaneously.
+
+Let's deep dive into most important components and modules.
+
+### apiCall
+
+This module was designed to help us create an `axios object`. This axios object used in everywhere we need to send requests to the
+server. In fact, I designed it to uniform calls. If you check `backend.urls`, you will notice that all of our defined urls are like
+**`api/v1/...`**, the `api` uses to let us know where those requests go(maybe you need to send requests to somewhere else) and `v1`
+is versioning(for now).
+
+### cartSlice
+
+In this module we defined three reducers: `addProduct`, `removeProduct` & `clearCart`. As those names suggest, add & remove will
+increase, decrease the chosen product by 1; `clearCart` will remove all products frm the cart.
+
+### authService
+
+The `authService` module will do the login logout operations with the backend. In order to login you need `access token` and this
+module will do it. The **`Log Out`** flow, just needs to delete the given `JWT` tokens. There is an object named `isAuthenticated`
+This will check the `localStorage`, if there is an `access token` available or not.
+
+## authSlice
+
+Like **`cartSlice`**, we will keep state information in here. We have two reducers here: `loginSuccess` & `logoutSuccess`. These
+reducers will keep users logged in or logged out. The `isAuthenticated` in 
+
+### CartItem
+
+This module will manage users cart. This module design to let users choose their favorite products and if they would like to
+continue, click on `proceed to checkout`.
+
+### Order 
+
+This module was designed to let users use their **`coupons`** and also will show users their chosen `products`, `quantity` of those
+products and the `total price` of all the products. If user has coupon, he/she can use it and it will effect in the `final price` in
+the **`OrderItem`** model of backend and as soon as user gets there in the `OrderItem` component in the frontend, he can see his 
+`final price` that should pay.
+
+### UserCoupon
+
+This component will let users know deadline of their `coupons`. This component use `useReducer` to update `timer`. The `useEffect`
+will take the `created_at` field of `UserCoupon` model and create an object from `Date`, get the time of it, `subtract` it from 
+the `created_at` and transform the result into a digital clock like object for user.
+
+# Admin 
+
+These components are classified into two parts:
+
+- Showing information:
+
+Admin can see information about everything, `users`, `products` & `advanced search`
+
+- Managing api & database:
+
+Admin can create, modify & delete everything from database.
 
 ## Contributing
 
