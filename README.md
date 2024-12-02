@@ -180,7 +180,7 @@ is versioning(for now).
 ### cartSlice
 
 In this module we defined three reducers: `addProduct`, `removeProduct` & `clearCart`. As those names suggest, add & remove will
-increase, decrease the chosen product by 1; `clearCart` will remove all products frm the cart.
+increase, decrease the chosen product by 1; `clearCart` will remove all products from the cart.
 
 ### authService
 
