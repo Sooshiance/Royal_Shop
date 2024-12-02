@@ -59,6 +59,37 @@ We will use these technologies to manage our application:
 
 We use **Docker** to containerize backend and frontend together.
 
+### backend
+
+First fill up some settings in `develop.py` file in the `settings` folder like: `SECRET_KEY` and so on. Than, Run basic commands
+
+                python3 manage.py makemigrations
+
+
+                python3 manage.py migrate
+
+
+                python3 manage.py test
+
+
+                python3 manage.py createsuperuser
+
+
+After these commands, run the docker file:
+
+                sudo docker-compose up --build
+
+
+### frontend
+
+For the frontend just run the docker and wait to build the app:
+
+                sudo docker-compose up --build
+
+
+Now you can check the port `3000` for app and port `8080` for Django admin.
+
+
 ## Backend
 
 I will use Service-Repository design pattern for **Royal** shop.
