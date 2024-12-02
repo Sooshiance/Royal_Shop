@@ -177,10 +177,6 @@ class OrderService:
         for item in cart_items:
             OrderItemRepository.create_order_item(order=order, user=user, final_price=item.products_price)
 
-        # TODO: Optionally clear the cart after placing the order
-        # for item in cart_items:
-        #     CartRepository.remove_from_cart(item)
-
         return order
 
     @staticmethod

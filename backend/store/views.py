@@ -2,7 +2,8 @@ from rest_framework import (permissions,
                             status,
                             views,
                             response,
-                            generics)
+                            generics,
+                            exceptions,)
 
 from .models import Product
 from .serializers import (CategorySerializer,
@@ -21,7 +22,8 @@ from .services import (CategoryService,
                        BrandService,
                        ProductService,
                        CartService,
-                       OrderService,)
+                       OrderService,
+                       OrderItemService)
 from .utils import check_coupon_expiration
 
 
@@ -113,42 +115,53 @@ class CartView(views.APIView):
             return response.Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
-class OrderListView(views.APIView):
+class OrderListCreateView(views.APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
         orders = OrderService.get_user_orders(self.request.user)
         serializer = OrderSerializer(orders, many=True)
-        return response.Response(serializer.data)
+        return response.Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request):
+        cart = CartRepository.get_cart_by_user(user=self.request.user).first()
+        coupon_code = request.data.get('coupon_code', None)
+        if coupon_code:
+            try:
+                order = OrderService.place_order(user=request.user, cart=cart, coupon_code=coupon_code)
+                serializer = OrderSerializer(order)
+                return response.Response(serializer.data, status=status.HTTP_201_CREATED)
+            except:
+                return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            try:
+                order = OrderService.place_order(user=request.user, cart=cart)
+                serializer = OrderSerializer(order)
+                return response.Response(serializer.data, status=status.HTTP_201_CREATED)
+            except:
+                return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class OrderDetailView(views.APIView):
     permission_classes = [permissions.IsAuthenticated]
 
-    def get(self, request, order_id):
-        order = OrderService.get_order_details(order_id)
-        serializer = OrderSerializer(order)
-        return response.Response(serializer.data)
-
-
-class CreateOrderView(views.APIView):
-    permission_classes = [permissions.IsAuthenticated]
-
-    def post(self, request):
-        cart_id = request.data.get('cart_id')
-        coupon_code = request.data.get('coupon_code', None)
-        cart = CartRepository.get_cart(cart_id, self.request.user)
-        order = OrderService.place_order(self.request.user, cart, coupon_code)
-        serializer = OrderSerializer(order)
-        return response.Response(serializer.data, status=status.HTTP_201_CREATED)
+    def get(self, request, pk):
+        try:
+            order = OrderService.get_order_details(pk)
+            serializer = OrderSerializer(order)
+            return response.Response(serializer.data)
+        except exceptions.ValidationError as e:
+            return response.Response({'detail': str(e)}, status=status.HTTP_404_NOT_FOUND)
 
 
 class OrderItemListView(views.APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request, order_id):
-        order = OrderRepository.get_order_by_id(order_id)
-        create_order = OrderItemRepository.create_order_item(order, self.request.user, order.total_price)
-        order_items = OrderItemRepository.get_order_items_by_order(order)
-        serializer = OrderItemSerializer(order_items, many=True)
-        return response.Response(serializer.data)
+        try:
+            order = OrderService.get_order_details(order_id)
+            order_items = OrderItemService.get_order_items(order)
+            serializer = OrderItemSerializer(order_items, many=True)
+            return response.Response(serializer.data)
+        except exceptions.ValidationError as e:
+            return response.Response({'detail': str(e)}, status=status.HTTP_404_NOT_FOUND)
