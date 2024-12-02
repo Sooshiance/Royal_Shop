@@ -61,16 +61,20 @@ We use **Docker** to containerize backend and frontend together.
 
 ### backend
 
-First fill up some settings in `develop.py` file in the `settings` folder like: `SECRET_KEY` and so on. Than, Run basic commands
+First fill up some settings in `develop.py` file in the `settings` folder like: `SECRET_KEY` & `DEBUG` in the `base.py` and so on.
+Than, Run basic commands
 
                 python3 manage.py makemigrations
 
+Migrate the database
 
                 python3 manage.py migrate
 
+Test the database
 
                 python3 manage.py test
 
+Create a super user for it
 
                 python3 manage.py createsuperuser
 
