@@ -20,6 +20,7 @@ import VerifyOTP from './components/Auth/VerifyOTP';
 import PasswordReset from './components/Auth/PasswordReset';
 import AdminWrapper from './components/Admin/AdminWrapper';
 import AllConfig from './components/Admin/Config/AllConfig';
+import Order from './components/Store/Order';
 
 function App() {
   return (
@@ -50,6 +51,11 @@ function App() {
           <Route path="/cart" element={
             <PrivateRoute>
               <Cart />
+            </PrivateRoute>
+          } />
+          <Route path="/order" element={
+            <PrivateRoute>
+              <Order />
             </PrivateRoute>
           } />
           <Route path="/comments/create" element={

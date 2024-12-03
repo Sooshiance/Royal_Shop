@@ -14,7 +14,7 @@ const Order = () => {
     const response = await apiCall.post("");
 
     if (response.status === 200) {
-      alert("")
+      alert("");
     }
   }
 

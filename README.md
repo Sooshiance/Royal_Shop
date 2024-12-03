@@ -166,7 +166,8 @@ the average of votes of each product individually.
 
 ### dashboard app
 
-This app does not contain any models but, I'v added a `queries` module and put some good queries in it
+This app does not contain any models but, I'v added some `queries` module and put some good queries in
+it:
 
 - **`ProductQuery`**: This class have two queries, one for looking for out of stock products, the other for calculate that how many
 product is left in stock.
@@ -223,7 +224,7 @@ The `authService` module will do the login logout operations with the backend. I
 module will do it. The **`Log Out`** flow, just needs to delete the given `JWT` tokens. There is an object named `isAuthenticated`
 This will check the `localStorage`, if there is an `access token` available or not.
 
-## authSlice
+### authSlice
 
 Like **`cartSlice`**, we will keep state information in here. We have two reducers here: `loginSuccess` & `logoutSuccess`. These
 reducers will keep users logged in or logged out. The `isAuthenticated` in 

@@ -135,7 +135,7 @@ class OrderListCreateView(views.APIView):
                 return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         else:
             try:
-                order = OrderService.place_order(user=request.user, cart=cart)
+                order = OrderService.place_order(user=request.user, cart=cart, coupon_code=None)
                 serializer = OrderSerializer(order)
                 return response.Response(serializer.data, status=status.HTTP_201_CREATED)
             except:
