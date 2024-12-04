@@ -218,7 +218,7 @@ class UserCouponRepository:
     def check_user_coupon(user:User, code:int):
         try:
             # TODO: First Software engineer principle(each function must have one responsibility)
-            uc:UserCoupon = UserCoupon.objects.filter(user=user, coupon_code=code)
+            uc:UserCoupon = UserCoupon.objects.filter(user=user, coupon_code=code).first()
             if uc.coupon_code != code or uc.is_used==True or uc.is_active==False:
                 raise ValidationError("No valid coupon")
             return uc

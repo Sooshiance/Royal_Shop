@@ -126,32 +126,22 @@ class OrderListCreateView(views.APIView):
     def post(self, request):
         cart = CartRepository.get_cart_by_user(user=self.request.user).first()
         coupon_code = request.data.get('coupon_code', None)
+        print(coupon_code)
         if coupon_code:
             try:
-                order = OrderService.place_order(user=request.user, cart=cart, coupon_code=coupon_code)
+                order = OrderService.place_order(user=self.request.user, cart=cart, coupon_code=coupon_code)
                 serializer = OrderSerializer(order)
+                print(f"\n\n {serializer.data} \n\n ")
                 return response.Response(serializer.data, status=status.HTTP_201_CREATED)
             except:
                 return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         else:
             try:
-                order = OrderService.place_order(user=request.user, cart=cart, coupon_code=None)
+                order = OrderService.place_order(user=self.request.user, cart=cart, coupon_code=None)
                 serializer = OrderSerializer(order)
                 return response.Response(serializer.data, status=status.HTTP_201_CREATED)
             except:
                 return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-class OrderDetailView(views.APIView):
-    permission_classes = [permissions.IsAuthenticated]
-
-    def get(self, request, pk):
-        try:
-            order = OrderService.get_order_details(pk)
-            serializer = OrderSerializer(order)
-            return response.Response(serializer.data)
-        except exceptions.ValidationError as e:
-            return response.Response({'detail': str(e)}, status=status.HTTP_404_NOT_FOUND)
 
 
 class OrderItemListView(views.APIView):

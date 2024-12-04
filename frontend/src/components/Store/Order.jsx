@@ -1,26 +1,25 @@
-import React, { useState } from 'react';
-import apiCall from '../../services/apiCall';
+// /src/components/Store/Order.jsx
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Header from '../Header';
+import Footer from '../Footer';
+import apiCall from '../../services/apiCall';
 
 const Order = () => {
 
-  const [coupon, setCoupon] = useState("");
+  const [orderItem, setOrderItem] = useState([]);
 
   const navigate = useNavigate();
 
-  checkCoupon = async () => {
-    // 
-
-    const response = await apiCall.post("");
-
-    if (response.status === 200) {
-      alert("");
-    }
-  }
+  useEffect(() => {
+    //
+  }, [])
 
   return (
     <>
-
+      <Header />
+      Order
+      <Footer />
     </>
   )
 }

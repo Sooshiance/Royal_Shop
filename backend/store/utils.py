@@ -8,10 +8,7 @@ from user.models import User
 def check_coupon_expiration(user_coupons:User):
     user_coupon_queryset = UserCoupon.objects.select_related('coupon').filter(user=user_coupons)
 
-    # Create an iterator from the queryset
-    user_coupon_iterator = iter(user_coupon_queryset)
-
-    for user_coupon in user_coupon_iterator:
+    for user_coupon in user_coupon_queryset:
         
         time_elapsed = timezone.now() - user_coupon.created_at
         

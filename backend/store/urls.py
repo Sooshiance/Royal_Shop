@@ -8,7 +8,6 @@ from .views import (AllCategoryGenericView,
                     ProductAPIView,
                     CartView,
                     OrderListCreateView,
-                    OrderDetailView,
                     OrderItemListView,)
 
 
@@ -26,6 +25,5 @@ urlpatterns = [
     path("cart/", CartView.as_view(), name='cart_create'),
     path("cart/<int:pk>/", CartView.as_view(), name='cart_edit'),
     path('orders/', OrderListCreateView.as_view(), name='order-list-create'),
-    path('orders/<int:pk>/', OrderDetailView.as_view(), name='order-detail'),
     path('orders/<int:order_id>/items/', OrderItemListView.as_view(), name='order-item-list'),
 ]
