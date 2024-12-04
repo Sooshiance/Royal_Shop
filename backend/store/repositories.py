@@ -246,7 +246,7 @@ class UserCouponRepository:
 class CartRepository:
     @staticmethod
     def get_cart_by_user(user:User):
-        return Cart.objects.filter(user=user)
+        return Cart.objects.filter(user=user).first()
 
     @staticmethod
     def get_cart(pk:int):

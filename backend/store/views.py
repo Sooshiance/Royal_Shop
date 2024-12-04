@@ -123,9 +123,8 @@ class OrderListCreateView(views.APIView):
         return response.Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):
-        cart = CartRepository.get_cart_by_user(user=self.request.user).first()
+        cart = CartRepository.get_cart_by_user(user=self.request.user)
         coupon_code = request.data.get('coupon_code', None)
-        print(coupon_code)
         if coupon_code:
             try:
                 order = OrderService.place_order(user=self.request.user, cart=cart, coupon_code=coupon_code)
@@ -145,11 +144,10 @@ class OrderListCreateView(views.APIView):
 class OrderItemListView(views.APIView):
     permission_classes = [permissions.IsAuthenticated]
 
-    def get(self, request, order_id):
+    def get(self, request):
         try:
-            order = OrderService.get_order_details(order_id)
-            order_items = OrderItemService.get_order_items(order)
-            serializer = OrderItemSerializer(order_items, many=True)
+            order_items = OrderItemService.get_order_item_by_user(self.request.user)
+            serializer = OrderItemSerializer(order_items)
             return response.Response(serializer.data)
         except exceptions.ValidationError as e:
             return response.Response({'detail': str(e)}, status=status.HTTP_404_NOT_FOUND)
