@@ -190,5 +190,13 @@ class OrderService:
 
 class OrderItemService:
     @staticmethod
+    def create_order_item(user, price, order):
+        return OrderItemRepository.create_order_item(order, user, final_price=price)
+    
+    @staticmethod
     def get_order_items(order):
         return OrderItemRepository.get_order_items_by_order(order)
+    
+    @staticmethod
+    def get_order_item_by_user(user):
+        return OrderItemRepository.get_order_item_by_user(user)

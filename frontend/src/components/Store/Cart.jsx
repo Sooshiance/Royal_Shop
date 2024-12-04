@@ -148,24 +148,6 @@ const Cart = () => {
                         </Col>
                     </Row>
                 )}
-                <Row>
-                    <Col>
-                        <div>
-                            {rates.length > 0 ? (
-                                rates.map((rate) => (
-                                    <Card key={rate.pk} className="mb-3">
-                                        <Card.Body>
-                                            <Card.Title>{rate.user_profile}</Card.Title>
-                                            <Card.Text>{rate.txt}</Card.Text>
-                                        </Card.Body>
-                                    </Card>
-                                ))
-                            ) : (
-                                <div>No Rate available!</div>
-                            )}
-                        </div>
-                    </Col>
-                </Row>
             </Container>
             <Footer />
         </>

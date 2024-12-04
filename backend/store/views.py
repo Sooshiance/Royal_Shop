@@ -16,7 +16,6 @@ from .serializers import (CategorySerializer,
 from .repositories import (
     CartRepository,
     OrderRepository,
-    OrderItemRepository,
 )
 from .services import (CategoryService,
                        BrandService,
@@ -131,7 +130,6 @@ class OrderListCreateView(views.APIView):
             try:
                 order = OrderService.place_order(user=self.request.user, cart=cart, coupon_code=coupon_code)
                 serializer = OrderSerializer(order)
-                print(f"\n\n {serializer.data} \n\n ")
                 return response.Response(serializer.data, status=status.HTTP_201_CREATED)
             except:
                 return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -155,3 +153,13 @@ class OrderItemListView(views.APIView):
             return response.Response(serializer.data)
         except exceptions.ValidationError as e:
             return response.Response({'detail': str(e)}, status=status.HTTP_404_NOT_FOUND)
+    
+    def post(self, request):
+        try:
+            order = OrderRepository.get_orders_by_user(self.request.user)
+            if order.total_price:
+                orderItem = OrderItemService.create_order_item(order=order, price=order.total_price, user=self.request.user)
+            srz = OrderItemSerializer(orderItem)
+            return response.Response(srz.data, status=status.HTTP_201_CREATED)
+        except exceptions.ValidationError as e:
+            return response.Response({'detail':str(e)}, status=status.HTTP_400_BAD_REQUEST)
