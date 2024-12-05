@@ -31,7 +31,6 @@ This platform has these features like:
 - Registration via OTP and dynamic **USERNAME_FIELD**
 - Authentication using **JWT**
 - Cart scenarios
-- User's Wishlist
 - Full featured Admin Queries
 - Payment Integration
 - Progress tracking
