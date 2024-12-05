@@ -4,56 +4,82 @@ import { useNavigate } from 'react-router-dom';
 import Header from '../Header';
 import Footer from '../Footer';
 import { fetchWithAuth } from '../../context/auth/authUtils';
+import Card from 'react-bootstrap/Card';
+import { Button } from 'react-bootstrap';
+import apiCall from '../../services/apiCall';
 
 const Order = () => {
 
   const [orders, setOrder] = useState([]);
-
-  const [error, setError] = useState({});
-
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    // fetch OrderItem from api
-
-    const fetchOrderItem = async () => {
+    const fetchOrders = async () => {
       try {
-        const response = await fetchWithAuth("store/orders/");
-        setOrder(response);
+        const response = await fetchWithAuth("store/orders/", navigate);
+        console.log(response);
+        setOrder(response); // Set the response data directly
       } catch (error) {
         setError(error);
+        console.log(error.message);
       }
     };
 
-    fetchOrderItem();
+    fetchOrders();
+  }, [navigate]);
 
-  }, [orderItem])
+  const proceedToOrderItem = async () => {
+    const token = localStorage.getItem("accessToken");
+
+    if (!token) {
+      navigate("/login");
+    }
+
+    try {
+      const response = await apiCall.post("store/order-items/", {}, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      if (response.status === 201) {
+        alert("accepted");
+      }
+
+      navigate("/order-item");
+    } catch (error) {
+      setError(error);
+      console.log(error.message);
+    }
+  };
+
+  if (error) return (
+    <>
+      <Header />
+      <div>Error fetching Order Item: {error.message}</div>
+      <Footer />
+    </>
+  );
 
   return (
     <>
       <Header />
       <div>
-        {orders.length > 0 ? (
-          orders.map((order) => (
-            <Card key={order.pk} style={{ width: '18rem' }}>
-              <Card.Img variant="top" src={order.cart.pk} />
-              <Card.Body>
-                <Card.Title>
-                  {order.user.username}
-                </Card.Title>
-                <Card.Text>
-                </Card.Text>
-                <Card.Footer className="text-muted">
-                  <small className="text-muted col-6">
-                    {order.total_price}
-                  </small>
-                </Card.Footer>
-              </Card.Body>
-            </Card>
-          ))
+        {orders.length === 0 ? (
+          <div>No Order</div>
         ) : (
-          <div>No Order available</div>
+          <div>
+            {orders.map((order) => (
+              <Card key={order.pk}>
+                {order.pk}
+              </Card>
+            ))}
+          </div>
         )}
+        <Button onClick={proceedToOrderItem}>
+          Proceed to OrderItem
+        </Button>
       </div>
       <Footer />
     </>

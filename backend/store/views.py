@@ -123,7 +123,7 @@ class OrderListCreateView(views.APIView):
         return response.Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):
-        cart = CartRepository.get_cart_by_user(user=self.request.user)
+        cart = CartRepository.get_cart_by_user(user=self.request.user).first()
         coupon_code = request.data.get('coupon_code', None)
         if coupon_code:
             try:
@@ -147,14 +147,14 @@ class OrderItemListView(views.APIView):
     def get(self, request):
         try:
             order_items = OrderItemService.get_order_item_by_user(self.request.user)
-            serializer = OrderItemSerializer(order_items)
+            serializer = OrderItemSerializer(order_items, many=False)
             return response.Response(serializer.data)
         except exceptions.ValidationError as e:
             return response.Response({'detail': str(e)}, status=status.HTTP_404_NOT_FOUND)
     
     def post(self, request):
         try:
-            order = OrderRepository.get_orders_by_user(self.request.user)
+            order = OrderRepository.get_orders_by_user(self.request.user).first()
             if order.total_price:
                 orderItem = OrderItemService.create_order_item(order=order, price=order.total_price, user=self.request.user)
             srz = OrderItemSerializer(orderItem)

@@ -1,7 +1,7 @@
 // src/components/Cart.jsx
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchWithAuth, sendWithAuth } from '../../context/auth/authUtils';
+import { fetchWithAuth } from '../../context/auth/authUtils';
 import { useNavigate } from 'react-router-dom';
 import { addProduct, removeProduct } from '../../context/cart/cartSlice';
 import Header from '../Header';
@@ -12,19 +12,19 @@ import { Container, Row, Col, Card, Button, Form } from 'react-bootstrap';
 const Cart = () => {
 
     const cartProducts = useSelector(state => state.cart.products);
-    const [cart, setCart] = useState([]);
+    const [carts, setCart] = useState([]);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-
     const [coupon_code, setCoupon] = useState("");
 
     useEffect(() => {
         const fetchCart = async () => {
             try {
                 const data = await fetchWithAuth('store/cart/', navigate);
-                setCart(data);
+                console.log('Fetched cart data:', data); // Log the fetched data
+                setCart(data); // Set the entire data object
             } catch (error) {
                 console.error('Error fetching cart data:', error);
                 setError(error);
@@ -83,22 +83,28 @@ const Cart = () => {
         try {
             const res = await apiCall.post("store/orders/", { coupon_code }, {
                 headers: { Authorization: `Bearer ${token}` },
-            })
+            });
             if (res.status === 201) {
-                alert("your coupon code accepted!");
+                alert("Your coupon code accepted!");
             }
-            console.log(res.detail);
-            console.log(res.status);
             navigate("/order");
         } catch (error) {
             setError(error);
         } finally {
             setLoading(false);
         }
-    }
+    };
 
     if (loading) return <div>Loading...</div>;
-    if (error) return <div>Error fetching cart data: {error.message}</div>;
+    if (error) return (
+        <>
+            <Header />
+            <div>Error fetching Order Item: {error.message}</div>
+            <Footer />
+        </>
+    );
+
+    console.log('Cart state:', carts); // Log the cart state
 
     return (
         <>
@@ -107,18 +113,20 @@ const Cart = () => {
                 <Row className="mb-4">
                     <Col>
                         <h2>Shopping Cart</h2>
-                        {cart.length === 0 ? (
+                        {Array.isArray(carts) && carts.length === 0 ? (
                             <p>Your cart is empty.</p>
                         ) : (
-                            cart.map(item => (
+                            Array.isArray(carts) && carts.map((item) => (
                                 <Card key={item.pk} className="mb-3">
                                     <Row noGutters>
                                         <Col md={4}>
-                                            <Card.Img src={item.thumbnail} alt={item.product.product_title} />
+                                            <Card.Img src={item?.product.thumbnail} alt={`Product ${item?.pk}`} />
                                         </Col>
                                         <Col md={8}>
                                             <Card.Body>
-                                                <Card.Title>{item.product.product_title}</Card.Title>
+                                                <Card.Title>
+                                                    {item.product.product_title}
+                                                </Card.Title>
                                                 <Card.Text>Quantity: {item.quantity}</Card.Text>
                                                 <Button variant="success" onClick={() => handleAddProduct(item)}>Increase Quantity</Button>
                                                 <Button variant="danger" className="ml-2" onClick={() => handleRemoveProduct(item)}>Remove</Button>
@@ -130,7 +138,7 @@ const Cart = () => {
                         )}
                     </Col>
                 </Row>
-                {cart.length > 0 && (
+                {Array.isArray(carts) && carts.length > 0 && (
                     <Row>
                         <Col md={4}>
                             <Form onSubmit={(e) => e.preventDefault()}>

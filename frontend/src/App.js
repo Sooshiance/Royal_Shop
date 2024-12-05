@@ -21,6 +21,7 @@ import PasswordReset from './components/Auth/PasswordReset';
 import AdminWrapper from './components/Admin/AdminWrapper';
 import AllConfig from './components/Admin/Config/AllConfig';
 import Order from './components/Store/Order';
+import OrderItem from './components/Store/OrderItem';
 
 function App() {
   return (
@@ -56,6 +57,11 @@ function App() {
           <Route path="/order" element={
             <PrivateRoute>
               <Order />
+            </PrivateRoute>
+          } />
+          <Route path="/order-item" element={
+            <PrivateRoute>
+              <OrderItem />
             </PrivateRoute>
           } />
           <Route path="/comments/create" element={
