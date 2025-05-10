@@ -1,14 +1,13 @@
 # models.py
+from django.core.validators import RegexValidator
 from django.db import models
 from django.db.models import F
-from django.core.validators import RegexValidator
+from user.models import User
 
 from .enums import (
-    Share,
     OrderStatus,
+    Share,
 )
-
-from user.models import User
 
 
 class Category(models.Model):

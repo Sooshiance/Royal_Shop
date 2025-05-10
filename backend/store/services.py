@@ -1,26 +1,27 @@
 # services.py
 from django.db import transaction
-
 from rest_framework.exceptions import ValidationError
 
 from .models import Cart, Order
-from .repositories import (CategoryRepository,
-                           BrandRepository,
-                           ProductRepository,
-                           GalleryRepository,
-                           FeatureRepository,
-                           CouponRepository,
-                           UserCouponRepository,
-                           CartRepository,
-                           OrderRepository,
-                           OrderItemRepository)
+from .repositories import (
+    BrandRepository,
+    CartRepository,
+    CategoryRepository,
+    CouponRepository,
+    FeatureRepository,
+    GalleryRepository,
+    OrderItemRepository,
+    OrderRepository,
+    ProductRepository,
+    UserCouponRepository,
+)
 
 
 class CategoryService:
     @staticmethod
     def get_all_categories():
         return CategoryRepository.get_all_categories()
-    
+
     @staticmethod
     def get_single_category(pk):
         return CategoryRepository.get_category_by_id(pk)
@@ -32,7 +33,7 @@ class CategoryService:
     @staticmethod
     def update_category(pk, data):
         return CategoryRepository.update_category(pk, data)
-    
+
     @staticmethod
     def delete_category(pk):
         return CategoryRepository.delete_category(pk)
@@ -42,7 +43,7 @@ class BrandService:
     @staticmethod
     def get_all_brands():
         return BrandRepository.get_all_brands()
-    
+
     @staticmethod
     def get_single_brand(pk):
         return BrandRepository.get_brand_by_id(pk)
@@ -60,7 +61,7 @@ class ProductService:
     @staticmethod
     def get_all_products():
         return ProductRepository.get_all_products()
-    
+
     @staticmethod
     def get_single_product(pk):
         return ProductRepository.get_product_by_id(pk)
@@ -72,7 +73,7 @@ class ProductService:
     @staticmethod
     def update_product(pk, data):
         return ProductRepository.update_product(pk, data)
-    
+
     @staticmethod
     def delete_product(pk):
         return ProductRepository.delete_product(pk)
@@ -102,7 +103,7 @@ class CouponService:
     @staticmethod
     def get_coupon_by_id(cid):
         return CouponRepository.get_coupon_by_id(cid)
-    
+
     @staticmethod
     def create_coupon(data):
         return CouponRepository.create_coupon(data)
@@ -112,15 +113,15 @@ class UserCouponService:
     @staticmethod
     def get_user_coupon(user):
         return UserCouponRepository.get_user_coupon_by_user(user)
-    
+
     @staticmethod
     def update_coupon(uc_id, data):
         return UserCouponRepository.update_user_coupon(uc_id, data)
-    
+
     @staticmethod
     def delete_coupon(uc_id):
         return UserCouponRepository.delete_user_coupon(uc_id)
-    
+
     @staticmethod
     def check_user_coupon(user, code):
         return UserCouponRepository.get_user_coupon_checkout(user, code)
@@ -151,7 +152,7 @@ class CartService:
 class OrderService:
     @staticmethod
     @transaction.atomic
-    def place_order(user, cart:Cart, coupon_code=None):
+    def place_order(user, cart: Cart, coupon_code=None):
         if not cart.products_price:
             raise ValidationError("Cart cannot be empty")
 
@@ -175,7 +176,9 @@ class OrderService:
         cart_items = CartRepository.get_cart_by_user(user)
 
         for item in cart_items:
-            OrderItemRepository.create_order_item(order=order, user=user, final_price=item.products_price)
+            OrderItemRepository.create_order_item(
+                order=order, user=user, final_price=item.products_price
+            )
 
         return order
 
@@ -192,11 +195,11 @@ class OrderItemService:
     @staticmethod
     def create_order_item(user, price, order):
         return OrderItemRepository.create_order_item(order, user, final_price=price)
-    
+
     @staticmethod
     def get_order_items(order):
         return OrderItemRepository.get_order_items_by_order(order)
-    
+
     @staticmethod
     def get_order_item_by_user(user):
         return OrderItemRepository.get_order_item_by_user(user)

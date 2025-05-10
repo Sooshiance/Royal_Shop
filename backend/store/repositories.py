@@ -1,21 +1,21 @@
 # repositories.py
-from typing import Any
 from decimal import Decimal
+from typing import Any
 
-from rest_framework.exceptions import ValidationError, NotAcceptable, NotFound
+from rest_framework.exceptions import NotAcceptable, NotFound, ValidationError
 
 from .models import (
-    User,
-    Category,
     Brand,
-    Product,
-    Gallery,
-    Feature,
-    Coupon,
-    UserCoupon,
     Cart,
+    Category,
+    Coupon,
+    Feature,
+    Gallery,
     Order,
     OrderItem,
+    Product,
+    User,
+    UserCoupon,
     WishList,
     WishListItem,
 )
@@ -336,7 +336,7 @@ class WishListRepositories:
     @staticmethod
     def get_user_wishlist(user: User):
         return WishList.objects.filter(user=user)
-    
+
     @staticmethod
     def create_wishlist(data: dict[str, Any]):
         return WishListItem.objects.create(**data)
